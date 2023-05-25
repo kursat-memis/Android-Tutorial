@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/showAlertDialogWithCustomStyleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert Dialog With Custom Style"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/showAlertDialogWithButtonsCenteredButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showAlertDialogWithStyleButton" />
+
+    <Button
+        android:id="@+id/showAlertDialogWithItemsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert Dialog With Items"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/showAlertDialogWithStyleButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showCustomAlertDialogButton" />
+
+    <Button
+        android:id="@+id/showCustomAlertDialogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Custom Alert Dialog"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/showAlertDialogWithItemsButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showAlertDialogWithDifferentButtonAndIconButton" />
+
+    <Button
+        android:id="@+id/showAlertDialogWithStyleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert Dialog With Style"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/showAlertDialogWithCustomStyleButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showAlertDialogWithItemsButton" />
+
+    <Button
+        android:id="@+id/showBasicAlertDialogButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Basic Alert Dialog"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@+id/showAlertDialogWithDifferentButtonAndIconButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/showAlertDialogWithDifferentButtonAndIconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Alert Dialog With Different Button And Icon"
+        app:layout_constraintBottom_toTopOf="@+id/showCustomAlertDialogButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showBasicAlertDialogButton" />
+
+    <Button
+        android:id="@+id/showAlertDialogWithButtonsCenteredButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show AlertDialog With Centered Buttons"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/showAlertDialogWithCustomStyleButton" />
+</androidx.constraintlayout.widget.ConstraintLayout>

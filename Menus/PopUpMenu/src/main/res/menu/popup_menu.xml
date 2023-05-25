@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/profile"
+        app:showAsAction="withText"/>
+    <item
+        android:id="@+id/action_settings"
+        android:title="@string/settings" />
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout">
+
+        <menu>
+            <item
+                android:id="@+id/action_logoutFacebook"
+                android:title="@string/logout_from_facebook"
+                />
+
+            <item
+                android:id="@+id/action_logoutInstagram"
+                android:title="@string/logout_from_instagram"
+                />
+        </menu>
+
+    </item>
+</menu>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title"> Are You Sure? </string>
+    <string name="message"> Are you sure that you want to delete all messages? </string>
+    <string name="positive_button"> Yes </string>
+    <string name="negative_button"> No </string>
+    <string name="neutral_button"> Remind Me Later! </string>
+</resources>

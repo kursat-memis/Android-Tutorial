@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SQLite</string>
+    <string name="date">Tarih</string>
+    <string name="note">Not:</string>
+    <string name="note_id">Note Id:</string>
+</resources>

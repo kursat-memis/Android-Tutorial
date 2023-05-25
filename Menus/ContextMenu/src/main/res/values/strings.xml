@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ContextMenu</string>
+    <string name="profile">Profile</string>
+    <string name="settings">Settings</string>
+    <string name="logout">Logout</string>
+    <string name="logout_from_instagram">Logout From Instagram</string>
+    <string name="logout_from_facebook">Logout From Facebook</string>
+</resources>

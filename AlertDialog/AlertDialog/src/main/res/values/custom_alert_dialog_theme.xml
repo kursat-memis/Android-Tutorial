@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="custom_alert_dialog_theme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Primary brand color. -->
+        <item name="android:textColor">@color/teal_700</item>
+        <item name="android:textColorPrimary">#D81B60</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">#43A047</item>
+        <item name="android:buttonTint">@color/my_color</item>
+
+    </style>
+
+</resources>
