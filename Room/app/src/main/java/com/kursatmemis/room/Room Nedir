@@ -1,0 +1,22 @@
+Room Nedir?
+- SQLite veritabanıyla çalışmayı kolaylaştıran bir database library'dir.
+- Local olarak veri depolanmasını sağlar. Yani veriler, cihazın içerisinde tutulur.
+
+Neden Room Kullanalım?
+ 1. Kolay Kullanım:  Basit bir API'ye sahiptir ve genellikle tekrarlayan ve sıkıcı olan
+ SQL sorgularını yazmaktan kurtarır. Ayrıca SQLiteOpenHelper sınıfının sağladığı karmaşıklığın
+ çoğunu gizler ve daha kullanıcı dostu bir API sunar.
+
+ 2. Derleme Zamanı Hataları: Compiler Time'da SQL sorgularını doğrulayarak Run Time'da hata çıkarak
+ uygulamanın crash olma olasılığını azaltır.
+
+ 3. ORM (Object-Relational Mapping): Room, SQLite veritabanıyla nesne tabanlı programlama arasında
+ bir köprü görevi görür. ORM, veritabanı tablolarını ve sorgularını, programlama dillerindeki
+ nesnelerle ilişkilendirerek veritabanı işlemlerini daha basit ve anlaşılır hale getirir.
+ Mesala bir sınıfın başına @Entity(tableName = "student") annotation'ınını eklersek artık o sınıf
+ veritabanındaki 'student' tablosunu temsil eder ve Student sınıfının her bir attribute'u,
+ veritabanındaki sutunlara karşılık gelir.
+
+
+
+
