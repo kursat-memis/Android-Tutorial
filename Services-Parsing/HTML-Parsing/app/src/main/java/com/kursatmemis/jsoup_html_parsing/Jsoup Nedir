@@ -1,0 +1,14 @@
+ Jsoup Nedir?
+- Jsoup, HTML ve XML belgelerini analiz etmek, manipüle etmek ve ayrıştırmak (parse etmek) için
+kullanılan bir kütüphanedir
+- Web sitesi tarafından verileri almamız için hazırlanmış bir API bulunmadığı durumlarda
+Jsoup kütüphanesini kullanarak ilgili web sitesindeki verileri alabilir ve kendi uygulamamızda
+kullanabiliriz.
+- Jsoup, HTML veya XML belgesini bir Document nesnesi olarak temsil eder. Bu belge üzerinde
+çeşitli sorgular ve işlemler gerçekleştirilebilir. Belgedeki etiketleri, sınıfları, kimlikleri
+veya diğer öznitelikleri kullanarak belirli elementlere erişebilir, içeriklerini okuyabilir,
+düzenleyebilir veya değiştirebiliriz.
+
+ Dikkat!
+Jsoup'ta önemli bir dezavantaj şudur: Eğer web sayfasının HTML içeriğini değişirse
+programımız doğru bir şekilde çalışmayacaktır.
