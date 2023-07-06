@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
 
-        // Eğer adapter'da belirtilen data source üzerinde, add-remove gibi data source'u
+        // Eğer run time'da, adapter'da belirtilen data source üzerinde, add-remove gibi data source'u
         // güncelleyen operasyonlar çağrılmışsa, bu değişikliklerin adapter'a bildirilmesi ve
         // bunun sonucunda listview üzerindeki item'ların güncellenmesi gerekir.
         // Bu değişiklikleri adapter'a bildirmek için aşağıdaki notifyDataSetChanged methodunu
