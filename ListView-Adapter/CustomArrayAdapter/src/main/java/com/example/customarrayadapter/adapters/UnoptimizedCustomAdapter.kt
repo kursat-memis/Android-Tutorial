@@ -73,28 +73,14 @@ class UnoptimizedCustomAdapter(
     private val data: List<String> = ItemData.createData()
 ) :
     ArrayAdapter<String>(context, R.layout.custom_layout, data) {
-
-    /**
-     * getView Methodunun İçeriği Nasıl Dolduruldu?
-     * 1. layoutInflater edinildi.
-     * 2. layoutInflater kullanılarak ListView'da görüntülenecek olan item'lar için oluşturulan
-     * XML dosyası, kotlin objesine dönütürüldü.
-     * 3. XML dosyasındaki TextView objesi elde edildi.
-     * 4. TextView üzerinde yazacak olan text set edildi.
-     * 5. Bu aşamalardan sonra return edilen customView objesi, ListView üzerinde görüntülenecektir.
-     */
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val layoutInflater = context.layoutInflater
         val customView = layoutInflater.inflate(R.layout.custom_layout, parent, false)
         val textView = customView.findViewById<TextView>(R.id.my_text_view)
         textView.text = data[position]
-        Log.e(
-            "mKm - getView",
-            "convertView: ${convertView?.findViewById<TextView>(R.id.my_text_view)?.text} " +
-                    "for ${data[position]}"
-        )
-        Log.e("mKm - getView", "Runned. ${++countGetView}")
+
+        Log.w("custom-adapter", "getView methodu çalıştı.")
+
         return customView
     }
 
