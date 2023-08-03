@@ -1,0 +1,37 @@
+ ViewBinding vs DataBinding:
+ - !!! ViewBinding'in ana avantajı hızdır. ViewBinding, DataBinding'e göre hızlıdır.!!!
+ - Her ikisinde de android studio tarafından otomatik olarak bir Binding class'ı oluşturulur
+ ve bu class'dan bir obje oluşturarak layout dosyamızdaki view'lara erişebiliriz.
+ - DataBinding, ViewBinding'in yaptığı her şeyi yapmaktadır ve buna ek olarak, XML dosyasındaki
+ değişkenleri kullanmamıza da olanak tanır.
+ - ViewBinding'de layout'larda <layout> tagleri tanımlamaya gerek yok. Ancak dataBinding'de var.
+ - Unutma ki viewBinding, dataBinding'e göre daha hızlıdır ve derleme süresi daha azdır.
+
+ Peki madem DataBinding, ViewBinding'in yaptığı her şeyi yapabiliyor o halde neden
+ ViewBinding kullanayım?
+ - Cevap -> 'Performans'tır. ViewBinding, DataBinding'e göre daha hafiftir ve daha performanslı
+ çalışır. Bunun için küçük ve az karmaşık projelerde viewBinding kullanılması önerilir. Ancak;
+ büyük ve karmaşık projelerde, kodun okunabilirliği açısından dataBinding kullanmak daha mantıklı
+ olacaktır. Özellikle dataBinding, MVVM mimarisine daha uygun hareket eder.
+
+ Hangisini Kullanmalıyım?
+ - Burada projenin ihtiyaçlarına göre seçim yapmalıyız.
+ --> View Binding, yalnızca layout dosyanızdaki nesnelere erişmeniz için iyi bir tercihtir.
+ --> Layout içindeki nesnelerinize veri göndermek gerekiyorsa Data Binding daha iyi bir seçim
+ olacaktır.
+ --> Projenizde MVVM kullanıyorsanız , Data Binding kullanmanız daha iyi olacaktır.
+ --> Data Binding ile görünüme verileri de aktarabildiğimiz için MVVM ve temiz kod yapısına
+ daha uyumlu olacaktır.
+
+ Genel Olarak;
+ Projemizde Data Binding ve View Binding birlikte kullanılabilir.
+ Verileri aktardığımız görünümlerde Data Binding , aktarmadığımız görünümlerde ise
+ View Binding kullanabiliriz.
+
+ Ne Zaman Hangisini Kullanayım?
+ Eğer daha düzenli bir koda sahip olmak istiyorsanız ve verileri aktarmak istediğiniz bir projeniz
+ var ise Data Binding kullanabilirsiniz.
+ Layout dosyalarına daha hızlı ve kolay erişmek istiyorsanız ama veri aktarmak istemiyorsanız
+ View Binding kullanabilirsiniz.
+ --> Küçük ve az karmaşık projelerde --> ViewBinding
+ --> Complex projelerde --> DataBinding

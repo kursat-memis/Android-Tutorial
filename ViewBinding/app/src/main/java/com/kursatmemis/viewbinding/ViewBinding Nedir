@@ -1,0 +1,57 @@
+
+ View Binding Nedir?
+     - findViewById() methodunu basitleştirmek ve binding işlemleri sırasında oluşabilecek hataların
+     önüne geçebilmek adına viewBinding kullanıma sunuldu.
+     - Binding işlemleri sırasında hata alma olasılığımızı düşüren, yeni nesil bir bağlama yöntemidir.
+
+
+ ViewBinding vs DataBinding:
+     - Data Binding, build time üzerinde oldukça olumsuz etkisi vardır.
+     Android takımı, bunun farkında olması sebebiyle View Binding çıkardı.
+
+     1-) Kullanılabilirlik:
+     Her iki kütüphanenin de gradle üzerinden etkinleştirilmesi gereklidir. Ancak Data Binding
+     sınıfını generate etmek istiyorsak xml dosyamız içerisindeki UI bileşenlerini <layout> taglari
+     arasına almamız gereklidir. View Binding’te böyle bir gereklilik yoktur. Gradle üzerinden aktif
+     ettikten sonra gerekli classlar otomatik olarak generate edilmektedir.
+
+     2-) Hız:
+     View Binding'in daha hızlı olmasının başlıca sebebi gereksiz annotion kullanılmamasıdır.
+     Bunun sebebiyle uygulamanın build zamanı daha kısa sürerek performanslı çalışır.
+
+ Neden ViewBinding?
+     1-) Null referansları önler:
+     View binding, bileşenlere erişimi daha güvenli hale getirir ve null referans hatalarını engeller.
+     findViewById() yönteminde, kod ile view bileşenlerini bağladığımızı sansak bile geri dönüş değeri
+     olarak bazen null dönebiliyor. findViewById() yöntemi yerine bileşenlere doğrudan erişim sağlar ve
+     bunun sonucunda null hatası alma olasılığımızı minimuma indirir.
+
+     2-) Performansı artırır:
+     View binding, bileşenleri sadece bir kez şişirir ve daha sonra onlara doğrudan erişim sağlar.
+     Bu, findViewById() yöntemine kıyasla daha hızlı ve verimli bir yöntemdir. findViewById() yönte-
+     minde UI’da bulunan her bir View tek tek kontrol edilerek eşleştirilmek zorundadır ve bu da bize
+     maliyet getirir.
+
+     3-) Daha az kod:
+     View binding, bileşenlere erişimi kolaylaştırır, böylece UI elemanlarıyla etkileşim kurmak için
+     daha az kod yazmanız gerekir.
+
+ Ek olarak;
+    Birden fazla view component kullandığımız durumlarda, örneğin yatay ve dikey ekran için ayrı
+    ayrı tasarım yaptığımızda, yatayda bulunan bileşenler dikeyde bulunmuyorsa findViewById null
+    döner ve run time'da bir exception fırlatır.
+
+    Bağlama sırasında direkt olarak layout dosyamızdaki nesnelere bağlanacağımız için oldukça
+    güvenlidir. Örneğin kullanmadığımız layout dosyaları üzerinde aynı isimde başka bileşenler
+    olabilir. Bunlara bağlanmak yerine hedeflediğimiz bileşene bağlama işlemini viewBinding ile
+    sağlarız.
+
+
+  ViewBinding Çalışma Mantığı:
+      View Binding, bir layout dosyasını temsil eden bir sınıf oluşturur ve bu sınıfın içine
+      view bileşenlerini, XML dosyasındaki view'lara karşılık gelen attribute olarak ekler.
+      Oluşturulan View Binding sınıfı, layout dosyanızdaki view bileşenlerine erişim sağlamak için
+      kullanılır. Bu sınıf, layout dosyasında belirttiğiniz tüm view bileşenlerine karşılık gelen
+      public alanlar içerir. Böylece, activity ya da fragment gibi bir sınıfta View Binding sınıfını
+      kullanarak layout dosyanızdaki view'lara erişebilirsiniz.
+

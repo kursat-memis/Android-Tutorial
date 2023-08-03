@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="myPrimitiveVariable"
+            type="Integer" />
+
+        <variable
+            name="myPrimitiveVariableForTwoWays"
+            type="Integer" />
+
+        <variable
+            name="myReferanceVariable"
+            type="com.kursatmemis.databinding.MyClass" />
+
+        <variable
+            name="isSuccess"
+            type="Boolean" />
+        
+        <variable
+            name="handler"
+            type="com.kursatmemis.databinding.EventHandler" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".temel-kullanim.MainActivity">
+
+        <!-- binding objesi üzerinden text'i değişecek. -->
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Hello World!"
+            android:textSize="15sp" />
+
+        <!-- Atanan değişkenin değeri olarak texti değişecek. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{myPrimitiveVariable.toString()}"
+            android:textSize="15sp" />
+
+        <!-- Two-Ways-DataBinding -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{myPrimitiveVariable.toString()}"
+            android:textSize="15sp" />
+
+        <!-- Atanan objenin name attribute'u olarak texti değişecek. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@{myReferanceVariable.name}"
+            android:textSize="15sp" />
+
+        <!-- isSuccess değerine göre textview'ın rengi değişecek. -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="isSuccess değişkeninin değerine göre renk değişecek."
+            android:textColor="@{isSuccess ? @color/pink : @color/yellow}"
+            android:textSize="15sp" />
+
+        <!-- Butona method baglama. -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:onClick="@{handler::buttonOnClick}"
+            />
+
+        <!-- Butona listener ekleme. -->
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            android:onClick="@{(view) -> handler.buttonOnClick(view)}"
+            />
+    </LinearLayout>
+</layout>
+

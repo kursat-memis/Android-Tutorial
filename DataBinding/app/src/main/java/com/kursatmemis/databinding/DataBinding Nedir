@@ -1,0 +1,25 @@
+
+ DataBinding Nedir?
+ - Uygulamadaki UI bileşenleri (textView vb.) ve veriler(textview'da göstermek istediğimiz data vb.)
+ arasındaki bağlantıyı kotlin koduyla yapmak yerine xml'de, bildirimsel olarak veri bağlamayı sağ-
+ layan bir yapıdır.
+ - DataBinding, view'ları xml üzerinde nesneler ile bağlama işlemidir.
+ - Veri odaklı kullanıcı arayüzleri(UI) için daha hızlı ve daha düzenli kod yazmamızı sağlayan
+ bir yapıdır.
+
+ Avantajları:
+ - View'ları koda bağlamak için kullanılan ama complex bir yapı olan findViewById() methodu yerine
+ dataBinding ile view'lara erişmeyi daha performanslı hale getiririz.
+ - NullPointerException alma olasılığımızı düşürür.
+ - Okunabilirliği arttırır.
+ - View'ları xml üzerinde data ile bağlarken bildirimsel bir komut kullandığımız için herhangi bir
+ hata durumunda compiler time'da hata gösterilecek ve run time'da hata almayacağız.
+
+
+Android her bir view’ı almak için bir kez view hiyerarşisini tararıyor ve bunu kullanıcı
+uygulama ile etkileşim halinde olduğu zamanda değil, uygulama başlangıcında yapıyor.
+
+Sonuç olarak, küçük projeler için databinding çok gerekli görülmese bile,
+ karmaşık yapıda ve hiyerarşisi derin olan projeler için findViewById ile view’ları tek tek
+ tanımlayıp, çağırıp ve değer atamak yerine databinding ile bu işi daha performanslı
+ ve daha kolay yoldan yapabilirsiniz.

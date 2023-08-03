@@ -1,0 +1,45 @@
+
+  MVVM(Model - View - ViewModel) Nedir?
+- Android uygulamaları geliştirmek için yaygın olarak kullanılan bir design pattern'dir.
+  (Design Pattern = Tasarım Deseni)
+- MVVM, developer'ın projeyi kodlama biçimini nasıl yapacağını açıklayan bir kültürdür.
+- MVVM, 'Model-View-ViewModel' kısaltmasıdır.
+- MVVM, projedeki kodları katmanlara ayırarak kodun daha okunaklı olmasını sağlar.
+
+
+  MVVM Katmanları:
+  Model: Web servislerinden, veritabanlarından veya farklı veri kaynaklarından gelen verileri,
+  kısacası uygulamada kullandığımız verileri temsil etmek için oluşturduğumuz data class'lardır.
+
+  View: Kullanıcı arayüzünün(UI) tasarlandığı ve kullanıcı ile etkileşime girdiği yerdir.
+  (Activity-Fragment-Layout)
+  View katmanında lojik işlemler yapılmaz. Bu katman, kullanıcının view'larla girdiği etkileşimi
+  (buton tıklamaları, text yazmaları vb.) dinleyip, bu etkileşimleri ViewModel'a ileterek
+  lojik işlemlerin orda yapılmasını sağlayıp, yapılan lojik işlemler neticesinde elde edilen sonucu
+  ekrandaki bir view ile kullanıcıya bildirmekten sorumludur.
+
+  ViewModel: Lojik işlemlerin yapıldığı ve yapılan bu işlemlerin yapıldığı katmandır. View'dan
+  bu katmana istek atılır, bu katmanda belirli lojik işlemleri gerçekleştirilir, burada yapılan
+  lojik işlemler, View katmanında observe edilir(Gözlemlenir) ve işlemlerin neticesinde elde edilen
+  sonuçlar view katmanında kullanıcıya gösterilir. Yani bu katman, view'da gösterilecek olan verileri
+  hazırlar.
+
+  Yani genel olarak;
+  - Bizler uygulamayı geliştirirken View içerisinde kullanıcının eylemine göre ViewModel'dan ilgili
+  methodu çağırırız. ViewModel'da ya lojik bir işlem yapılır, ya servisten veri getirilir ya da
+  database'den veriler getirilir. Ardından getirilen bu veriler, modellenir ve bu şekilde bir sonuç
+  elde edilir. View ise bu sonucu observe eder(Gözlemler). Sonrasında da observe ettiği değeri
+  kullanıcıya gösterir.
+
+
+  MVVM Avantajları:
+  1-) Düzenli ve bakımı kolay kod:
+  MVVM, uygulamayı farklı katmanlara böldüğü için kod tabanını düzenli ve daha kolay
+  bakılabilir hale getirir.
+
+  2-) Test edilebilirlik:
+  ViewModel, View'den bağımsız olarak test edilebilir olduğundan, test otomasyonunu kolaylaştırır.
+
+  3-) Sürdürülebilirlik - Adaptasyon:
+  MVVM ile yazılan projeler, başka bir yazılımcının eline geçtiği zaman projeye adaptasyon süreci
+  kısa olur ve kodları daha kolay okuyabilir.
