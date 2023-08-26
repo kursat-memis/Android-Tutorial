@@ -1,3 +1,14 @@
+  Neden Bir Design Pattern'e İhtiyaç Duyarız?
+  Standartlaşma:
+  - Tasarım desenleri, belirli bir problemi çözmek için kabul edilmiş bir çözüm
+    yaklaşımı sunar.
+    Bu, farklı geliştiriciler arasında iletişimi kolaylaştırır ve ortak bir dil oluşturur.
+    Bu da yazılım projelerinin daha sürdürülebilir ve anlaşılabilir olmasını sağlar.
+
+  Esneklik ve Değişiklik Kolaylığı:
+  - Tasarım desenleri, kodun daha esnek ve değişikliklere karşı dirençli olmasını sağlayabilir.
+    Bir tasarım deseni kullanarak oluşturulan bir yapı, daha sonra gelen gereksinim değişikliklerine
+    daha kolay adapte olabilir.
 
   MVVM(Model - View - ViewModel) Nedir?
 - Android uygulamaları geliştirmek için yaygın olarak kullanılan bir design pattern'dir.
@@ -5,21 +16,27 @@
 - MVVM, developer'ın projeyi kodlama biçimini nasıl yapacağını açıklayan bir kültürdür.
 - MVVM, 'Model-View-ViewModel' kısaltmasıdır.
 - MVVM, projedeki kodları katmanlara ayırarak kodun daha okunaklı olmasını sağlar.
-
+- MVVM, kullanıcı arayüzleri ile arka planda yapılan işlemleri ayırarak yazılım geliştirmeyi
+  kolaylaştırmak, kodların düzenini ve projenin kolay devam edilebilirliğini sağlamak için
+  tasarlanmış bir yazılım geliştirme mimari desenlerinden biridir.
 
   MVVM Katmanları:
   Model: Web servislerinden, veritabanlarından veya farklı veri kaynaklarından gelen verileri,
   kısacası uygulamada kullandığımız verileri temsil etmek için oluşturduğumuz data class'lardır.
 
   View: Kullanıcı arayüzünün(UI) tasarlandığı ve kullanıcı ile etkileşime girdiği yerdir.
-  (Activity-Fragment-Layout)
+  (Activity-Fragment)
   View katmanında lojik işlemler yapılmaz. Bu katman, kullanıcının view'larla girdiği etkileşimi
   (buton tıklamaları, text yazmaları vb.) dinleyip, bu etkileşimleri ViewModel'a ileterek
   lojik işlemlerin orda yapılmasını sağlayıp, yapılan lojik işlemler neticesinde elde edilen sonucu
   ekrandaki bir view ile kullanıcıya bildirmekten sorumludur.
+  Genel olarak bu katman; sadece kullanıcının uygulama üzerindeki eylemlerini ViewModel katmanına
+  bildirmekle görevlidir. İçinde mantıksal bir işlev barındırmaz.
+  Örneğin; kullanıcı butona tıklayınca kullanıcının arama kutusuna girdiği değeri işlemek
+  (veritabanında aratmak vb.) üzere ViewModel’e gönderir.
 
-  ViewModel: Lojik işlemlerin yapıldığı ve yapılan bu işlemlerin yapıldığı katmandır. View'dan
-  bu katmana istek atılır, bu katmanda belirli lojik işlemleri gerçekleştirilir, burada yapılan
+  ViewModel: Lojik işlemlerin yapıldığı katmandır. View'dan bu katmana istek atılır,
+  bu katmanda belirli lojik işlemleri gerçekleştirilir, burada yapılan
   lojik işlemler, View katmanında observe edilir(Gözlemlenir) ve işlemlerin neticesinde elde edilen
   sonuçlar view katmanında kullanıcıya gösterilir. Yani bu katman, view'da gösterilecek olan verileri
   hazırlar.
@@ -31,15 +48,20 @@
   elde edilir. View ise bu sonucu observe eder(Gözlemler). Sonrasında da observe ettiği değeri
   kullanıcıya gösterir.
 
-
   MVVM Avantajları:
   1-) Düzenli ve bakımı kolay kod:
   MVVM, uygulamayı farklı katmanlara böldüğü için kod tabanını düzenli ve daha kolay
   bakılabilir hale getirir.
 
   2-) Test edilebilirlik:
-  ViewModel, View'den bağımsız olarak test edilebilir olduğundan, test otomasyonunu kolaylaştırır.
+  Görsel arayüzün ve kodun birbirinden ayrışması kodun test edilebilirliğini ve bakımını kolaylaştırır.
 
   3-) Sürdürülebilirlik - Adaptasyon:
   MVVM ile yazılan projeler, başka bir yazılımcının eline geçtiği zaman projeye adaptasyon süreci
   kısa olur ve kodları daha kolay okuyabilir.
+
+  MVVM’i Android uygulama geliştirirken diğer desenlere göre daha fazla tercih edilme sebebi olarak;
+  - View ile Model arasındaki bağlayıcı kodların daha kısa yazılabiliyor olması,
+  - Projeyi daha kolay test ediliyor kılması,
+  - Daha fazla modülerlik sağlaması
+  gibi avantajlar sunması ve en önemlisi de Google’un destekliyor ve teşvik ediyor olması söylenebilir.
