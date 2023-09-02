@@ -1,0 +1,20 @@
+ Dagger Nedir?
+ - Dagger, bağımlılıkları yönetmek için kullanılan bir Dependency Injection Framework'üdür.
+ - Dagger, uygulamadaki bağımlılıkları daha düzenli ve yönetebilir şekilde kullanmayı sağlayan bir
+   kütüphanedir.
+ - Dagger, bağımlılıkları otomatik olarak oluşturur ve bu bağımlılıkları, bağımlılıklara ihtiyaç
+   duyan class'lara enjekte eder. Bunu manuel olarak bizim yapmamız yerine dagger'ın yapması hata
+   alma olanağımızı azaltır ve daha az kod yazmamızı sağlar.
+
+ Yani Dagger, bağımlılıkları bizim manuel olarak yönetmemize gerek kalmadan kendisi otomatik olarak
+ kendisi yönetiyor ve bu sayede daha sürdürülebilir bir kod yazmamıza olanak sağlıyor.
+ Özellikle büyük ve karmaşık projelerde bağımlılıkları bizim yönetmemiz zorlaştığından dolayı
+ dagger'ı kullanmak cazipleşiyor.
+
+ Dagger, compiler time'da bağımlılıkları enjekte ettiği için run time'da bir maliyete sebep olmaz.
+
+ Dagger temel olarak 3 unsurdan oluşur;
+ 1. Module: Bağımlılıkların nasıl oluşturulacaklarının tanımlanğı class'lardır.
+ 2. Consumer: Bağımlılığa ihtiyaç duyan class'lardır.
+ 3. Component: Dagger kütüphanesinin, bağımlılıkları oluşturup ve enjekte etmesi için kullanacağı
+ interface'dir.
