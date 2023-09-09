@@ -1,0 +1,57 @@
+ Fragment Nedir?
+ - Fragment'lar, android uygulamalarda Activity'lerin içine yerleştirilen ve kullanıcı deneyimini
+   ile uygulama performansını arttıran yapılardır.
+ - Aynı ekranda iki farklı activity çalıştırılamazken dilenilen kadar fragment çalıştırılabilir.
+ - Fragment'lar tek başına çalışamazlar. Çalışabilmek için bir activity'e ihtiyaç duyarlar.
+ - Activity üzerinde çalışırlar ve gösterilirler. Kendilerine ait bir yaşam döngüleri vardır ancak
+   activity üzerinde çalıştıkları için activity'nin yaşam döngüsünden de etkilenirler. Mesela
+   bir activity destroy edildiğinde bu activity üzerinde çalışan fragment'larda destory edilirler.
+ - Fragment'lar genellikle karmaşık UI tasarımlarını daha küçük parçalara bölmek ve daha modüler
+   bir yapıda daha yönetilebilir bir yapı elde etmek için kullanılırlar. Ayrıca birden fazla
+   activity üzerinde ortak bir UI göstermek içinde kullanılabilirler.
+ - Fragment'lar, kullanıcının uygulamada ekranlar arasında daha hızlı ve kolay bir şekilde
+   gezinmesine olanak tanırken aynı zamanda ekranlar arasında veri aktarımı için etkili bir
+   yol sağlarlar.
+ - Temelde daha modüler bir ekran tasarımı için kullanılan yapılardır.
+
+ Neden Fragment?
+ 1. Fragment'ların en büyük avantajı activity'lere göre daha hafif olmaları ve bunun neticesinde
+ daha hızlı ve performanslı olmalarıdır.
+ 2. Google, çok fragment az activity kullanımını önermektedir.
+ 3. Bir ekranda birden fazla ekran göstermek gibi bir yapı sağladığından kullanıcı için daha iyi
+ bir uygulama deneyimini sağlayabilir.
+ 4. Eğer uygulamanın farklı ekranlarında ortak bir UI göstermek istiyorsak bu ortak UI'ı
+ bir fragment olarak oluşturur ve gösterilmesi gereken sayfalarda çağırarak kullanabiliriz.
+ 5. Eğer uygulamalarda BottomNavigation, NavigationDrawer gibi özellikler kullanılacaksa kesinlikle
+ fragment kullanılmalı çünkü en yüksek uyumu fragment'lar sağlar.
+ 6. Fragment'lar kullanılarak karmaşık olan UI tasarımları daha küçük parçalar(fragment'lar) olarak
+ tasarlanıp ekranda gösterilebilir. Bu da bize modülerlik ve kolay yönetebilirlik sağlar.
+ 7. Özellikle tabletler gibi büyük ekrana sahip cihazlarda Fragment kullanarak bir Activity üzerinde
+ birden fazla ekran gösterebilir ve kullanıcıların işlemlerini tek bir sayfadan gerçekleştirilmesini
+ sağlayarak daha iyi bir uygulama deneyini sağlayabiliriz.
+
+ Ne zaman Activity Ne Zaman Fragment Kullanmalıyız?
+ - Uygulamalarında hangisini kullanacağına UI'ın karmaşıklığını düşünerek karar ver.
+ - UI nispeten daha basit ve tek bir ekran gerektiriyorsa Activity kullanabilirsin.
+ - Ancak UI karışık ise burada Fragment kullanmak daha mantıklı olabilir. Çünkü;
+   Karışık olan ekranlar Fragment kullanılarak daha küçük modüller halinde tasarlanabilir ve yönetimi
+   daha kolay hale getirilebilir.
+ - Kullanıcıların sürekli sayfa değiştirebilecekleri bir uygulama yapılıyorsa Fragment kullanılması
+   daha mantıklı olabilir. Çünkü;
+   Kullanıcı fragment'lar üzerinde daha hızlı bir şekilde sayfa geçişi yapabilir.
+   Örneğin instagram'a giren bir kullanıcı sık sık'mesajlar', 'reels videolar' ve 'kullanıcı arama'
+   sayfalarına geçiş yapıyorlar. Burada her seferinde yeni bir activity oluşturmak yerine
+   fragment'lar arasındaki geçişin sağlanması daha hafif ve performanslı olacaktır.
+ - Birden fazla activity üzerinde ortak bir ekran tasarlamak için fragment kullanılabilir.
+
+ Örnek Senaryo:
+ Bir kayıt ekranı yapacağını düşün. Bu ekranda 'Temel Kişisel Bilgiler', 'Finansal Bilgiler' ve
+ 'Şirket Bilgileri' gibi kısımlar olacak olsun. Bu durumda 1 tane RegistrationActivity oluşturup
+ bu activity üzerinde 3 tane Fragment kullanarak ekranın daha modüler bir tasarıma sahip olmasını
+ sağlamak iyi bir seçim olacaktır.
+ Bu uygulamada ek olarak bir 'Settings' sayfası oluşturulmak istendiğinde ise aynı Activity üzerinde
+ settings işlemlerini gerçekleştirecek bir Fragment kullanmak çokta mantıklı olmaz. Çünkü;
+ Registration activity/ekranının üzerinde settings işlemlerini gerçekleştirecek bir Fragment
+ bulundurmak alakasız bir durum olurdu ve uygulamanın modülerliği bozulurdu. Bunun yerine yeni bir
+ SettingsActivity oluşturup, settings işlemlerinin bu activity üzerinde gerçekleştirilmesini sağla-
+ mak daha mantıklı olurdu.
