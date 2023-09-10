@@ -1,0 +1,1 @@
+Bunu yapmak için önce A fragment'ından veriler activity'e taşınır ardından activity'den B fragment'ına taşınır.
