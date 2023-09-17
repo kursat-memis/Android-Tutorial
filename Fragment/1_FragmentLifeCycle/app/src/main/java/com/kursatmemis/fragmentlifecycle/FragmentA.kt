@@ -3,11 +3,10 @@ package com.kursatmemis.fragmentlifecycle
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 
 // Fragment'ı tamamen yıkmadığımız durumlarda: onPause - onStop
 // Tekrar açarsak : onStart - onResume
@@ -19,6 +18,7 @@ class FragmentA : Fragment() {
         İlk çağrılan method.
         Bu method ile fragment activity'e eklenerek activity'nin bir parçası haline gelir.
         Parametre olarak eklendiği context'i alır.
+        Bu method ile context'i alabiliriz.
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -30,22 +30,39 @@ class FragmentA : Fragment() {
         Fragment'ın başlangıç ayarlarını yapmak ve bu ayarları fragment'ın yıkılıp yeniden
         oluşturma sürecinde parametre olarak aldığı bundle objesiyle tekrar geri yüklemek
         için kullanılabilir.
-        Activity içerisinde onCreate methodunda nasıl ki ui bileşenlerine ilk değerlerini atıyorsak
-        burada da atayabiliriz. Ancak bunu onCreateView methodunda yapmak daha sağlıklı.
+        Genel olarak bu method'da aşağıdaki işlemleri yapabiliriz:
+        - Fragment içinde kullanılacak başlangıç değerlerin (örneğin, fragment'e iletilen argümanlar)
+        ayarlanması.
+        - Fragment içinde kullanılacak veri yapılarının (örneğin, liste, dizi, vb.) oluşturulması
+        ve başlatılması.
+        - Eğer fragment veritabanı vb. işlemleri yapacaksa, veritabanı bağlantısının oluşturulması
+         veya gerekli ön hazırlıkların yapılması.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.w("mKm - fragment", "onCreate")
 
+        // Başlangıç verilerini ayarla
+        val initialText = "Bu bir başlangıç metnidir."
+        val args = Bundle()
+        args.putString("text", initialText)
+        arguments = args
+
         if (savedInstanceState != null) {
             val name = savedInstanceState.getString("name")
             Log.w("mKm - name", name.toString())
         }
+
     }
 
     /*
         Ekranda gözükecek olan fragment tasarımının belirlendiği method'dur.
         Bu method'un return ettiği view, ekranda gösterilir.
+        View'larla alakalı işlemler bu method'da yapılır.
+        Veritabanı gibi işlemleri bu method'da yapmak yerine onCreate'de yapmak daha sağlıklıdır.
+        Çünkü bu methodun kullanım amacı UI ile ilgili işlemler yapmaktır. Ayrıca veritabanı
+        gibi geç yapılabilen işlemlerin bu method'da yapılması UI'ın gösterimi sırasında vb.
+        problem çıkarabilir.
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,13 +74,20 @@ class FragmentA : Fragment() {
     }
 
     /*
-        Activity'nin yaratılması tamamlandığında çalışacak method'dur.
-        Bu method'dan önce calisan methodlar'da, activity üzerindeki yapılara erişmek
-        çok sağlıklı değildir. Çünkü activity henüz oluşmamış olabilir.
+        Fragment'daki view'ların yaratılması tamamlandığında çalışacak method'dur.
+        Bu method'dan önce calisan methodlar'da, view'lara erişmek
+        çok sağlıklı değildir. Çünkü view'lar henüz oluşmamış olabilir.
      */
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        Log.w("mKm - fragment", "onActivityCreated")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.w("mKm - fragment", "onViewCreated")
+    }
+
+    // Daha önce kaydettiğimiz durumları bu method ile geri alabiliriz.
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        Log.w("mKm - fragment", "onViewStateRestored")
+        Log.w("mKm - name", savedInstanceState?.getString("name").toString())
     }
 
     // Fragment görünür olduğunda çağrılan method'dur.
@@ -94,6 +118,7 @@ class FragmentA : Fragment() {
         Log.w("mKm - fragment", "onStop")
     }
 
+    // Bu method, fragment yıkıldığında ya da pause edildiğinde verileri kaydetmek için kullanılır.
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         Log.w("mKm - fragment", "onSaveInstanceState")
