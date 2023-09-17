@@ -1,0 +1,36 @@
+Navigation: Uygulamada ekranlar arasında geçiş yapmamıza verilen isimdir.
+
+Biz normalde ekran geçişlerini manuel olarak kendimiz kontrol ederdik.
+Navigation Component, bu ekran geçişlerini daha tutarlı bir şekilde yapmamızı sağlar.
+Bunun yanında geri butonuna basılması, veri taşıma, animasyon gibi konularda da
+işimizi kolaylaştırır.
+
+Navigation Component:
+Jetpack kütüphanesinin bir parçasıdır ve uygulama içindeki navigasyonların daha kolay yönetilmesi
+için tasarlanmış bir araçtır.  Bu bileşen, uygulamanın farklı ekranları arasındaki gezinmeyi
+basitleştirmek ve düzenlemek için kullanılır.
+
+Navigation Component 3 Bileşenden Oluşur:
+1. NavigationGraph: Ekranların ve geçişleri barındıran bir XML dosyası.
+2. NavHost: Uygulamadaki ekranların üzerinde göründüğü ortamdır.
+(Activity'e bir view olarak ekliyoruz ve fragment'lar bunun üzerinde gözüküyor.)
+3. NavController: Navigation Graph içindeki ekranlar arasında geçiş yapma işlemlerimizi yöneten
+yapıdır.
+
+Navigation Component Avantajları:
+1. Fragment Geçiş İşlemlerini Handle Eder:
+- Navigation Component ile fragment'lar arasındaki geçiş işlemlerini kontrol edebilir ve bunları
+yönetebiliriz.
+2. Geçiş işlemleri için kolay bir şekilde animasyonlar eklemeyi sağlar.
+3. Navigation UI Pattern İçerir:
+4. Deep linking işlemini handle eder.
+   Deep Linking: Uygulama içinde farklı ekranlara/sitelere yönlendiren linkler.
+5. Navigation Editor sayesinde Navigation Graph üzerindeki ekranları ve bunlar arasındaki geçişleri
+daha kolay görebiliriz.
+6. Back tuşunu tüm activity'i yıkacak şekilde değilde bir önceki fragment'a geçecek şekilde
+kullanır. Eğer istersen kolay bir şekilde back tuşunun davranışlarını değiştirebiliriz.
+7. Navigation UI'lar ile Uyumlu Çalışır (Navigation drawers, Bottom navigation vs).
+
+Not: Navigation Component ile activity'leri de yönetmeye çalışabiliriz ancak bu yapı fragment'lar
+için tasarlandığından dolayı activity'lerle, fragment'lar kadar iyi bir uyum sağlamayacaktır ve
+fragment'ların yönetimi kadar kolay yönetim gerçekleştiremeyeceğiz.
