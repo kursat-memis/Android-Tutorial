@@ -18,10 +18,16 @@ class FragmentA : Fragment() {
         İlk çağrılan method.
         Bu method ile fragment activity'e eklenerek activity'nin bir parçası haline gelir.
         Parametre olarak eklendiği context'i alır.
-        Bu method ile context'i alabiliriz.
+
+        Bu method içinde yapılabilecekler;
+        Fragment, Activity'e bağlandığında activity'nin referansını
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
+
+        val activity = context as MainActivity
+        activity.f()
+
         Log.w("mKm - fragment", "onAttach")
     }
 

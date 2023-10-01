@@ -24,6 +24,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    fun f() {
+
+    }
+
     override fun onStart() {
         super.onStart()
         Log.e("mKm - activity", "onStart")
