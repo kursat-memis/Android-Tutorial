@@ -3,11 +3,11 @@
      - findViewById() methodunu basitleştirmek ve binding işlemleri sırasında oluşabilecek hataların
      önüne geçebilmek adına viewBinding kullanıma sunuldu.
      - Binding işlemleri sırasında hata alma olasılığımızı düşüren, yeni nesil bir bağlama yöntemidir.
-
+     -
 
  ViewBinding vs DataBinding:
-     - Data Binding, build time üzerinde oldukça olumsuz etkisi vardır.
-     Android takımı, bunun farkında olması sebebiyle View Binding çıkardı.
+     - DataBinding, build time üzerinde oldukça olumsuz etkisi vardır.
+     Android takımı, bunun farkında olması sebebiyle ViewBinding çıkardı.
 
      1-) Kullanılabilirlik:
      Her iki kütüphanenin de gradle üzerinden etkinleştirilmesi gereklidir. Ancak Data Binding
@@ -16,7 +16,7 @@
      ettikten sonra gerekli classlar otomatik olarak generate edilmektedir.
 
      2-) Hız:
-     View Binding'in daha hızlı olmasının başlıca sebebi gereksiz annotion kullanılmamasıdır.
+     ViewBinding'in daha hızlı olmasının başlıca sebebi gereksiz annotion kullanılmamasıdır.
      Bunun sebebiyle uygulamanın build zamanı daha kısa sürerek performanslı çalışır.
 
  Neden ViewBinding?
@@ -26,8 +26,12 @@
      olarak bazen null dönebiliyor. findViewById() yöntemi yerine bileşenlere doğrudan erişim sağlar ve
      bunun sonucunda null hatası alma olasılığımızı minimuma indirir.
 
+     Ayrıca binding yapmak istediğim layoutta id'si tanımlanmayan herhangi bir view ögesine
+     erişim sağlamam mümkün olmadığı için null hatası almamış oluyorum.
+
+
      2-) Performansı artırır:
-     View binding, bileşenleri sadece bir kez şişirir ve daha sonra onlara doğrudan erişim sağlar.
+     ViewBinding, bileşenleri sadece bir kez inflate eder ve daha sonra onlara doğrudan erişim sağlar.
      Bu, findViewById() yöntemine kıyasla daha hızlı ve verimli bir yöntemdir. findViewById() yönte-
      minde UI’da bulunan her bir View tek tek kontrol edilerek eşleştirilmek zorundadır ve bu da bize
      maliyet getirir.
@@ -51,7 +55,8 @@
       View Binding, bir layout dosyasını temsil eden bir sınıf oluşturur ve bu sınıfın içine
       view bileşenlerini, XML dosyasındaki view'lara karşılık gelen attribute olarak ekler.
       Oluşturulan View Binding sınıfı, layout dosyanızdaki view bileşenlerine erişim sağlamak için
-      kullanılır. Bu sınıf, layout dosyasında belirttiğiniz tüm view bileşenlerine karşılık gelen
-      public alanlar içerir. Böylece, activity ya da fragment gibi bir sınıfta View Binding sınıfını
+      kullanılır. Bu sınıf, layout dosyasında belirttiğiniz ve id'si olan tüm view bileşenlerine
+      karşılık gelen public alanlar içerir.
+      Böylece, activity ya da fragment gibi bir sınıfta View Binding sınıfını
       kullanarak layout dosyanızdaki view'lara erişebilirsiniz.
 
