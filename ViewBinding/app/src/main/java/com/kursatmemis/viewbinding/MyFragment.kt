@@ -40,7 +40,7 @@ class MyFragment : Fragment() {
         // _binding?.textView?.text = "ViewBinding in Fragment"
         binding.textView.text = "ViewBinding in Fragment"
 
-        return _binding?.root
+        return binding.root
     }
 
 

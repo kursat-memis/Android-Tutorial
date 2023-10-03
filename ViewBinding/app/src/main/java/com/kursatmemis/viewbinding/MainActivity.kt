@@ -3,6 +3,7 @@ package com.kursatmemis.viewbinding
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.kursatmemis.viewbinding.databinding.ActivityMainBinding
 
 /**

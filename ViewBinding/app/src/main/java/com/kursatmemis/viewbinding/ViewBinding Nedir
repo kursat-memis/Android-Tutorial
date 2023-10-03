@@ -1,9 +1,29 @@
 
+ FindViewById() Methodu Dezavantajları:
+    1. Performans Sorunu:
+    Bu method her çağrıldığında layouttaki tüm view hiyerarşisini tarar ve id'si eşleşen view'ı
+    return eder. Bolca view'ın kullanıldığı projelerde her çağrımda tüm view hiyerarşisini taramak
+    çok iyi performans alamamıza sebep olacaktır.
+
+    2. Kod Okunabilirliği ve Zamandan Kayıp:
+    Her view için findViewById() methodunu kullanarak bind etmemiz gerektiğinde fazla view içeren
+    projelerde fazla kod yazmış olacağız.
+
+    3. NullPointerException Sorunu:
+    Örneğin B layoutunda myTextView id'sine sahip bir view'ımız olsun. Biz A layout'unun activity
+    classında bu id'yi kullanarak findViewById() methodunu çağırdığımızda bu method geriye null
+    return eder.
+
+    4. Tip Güvensizliği:
+    Örneğin A ve B layout'larında aynı id'ye sahip 2 view olsun. A layoutundaki view TextView,
+    B layoutundaki view ImageView olsun. Biz developer olarak A layoutunun activity class'ında
+    findViewById methodunu ImageView olarak tipinde kullanırsak ClassCastException hatası alırız.
+
  View Binding Nedir?
      - findViewById() methodunu basitleştirmek ve binding işlemleri sırasında oluşabilecek hataların
      önüne geçebilmek adına viewBinding kullanıma sunuldu.
      - Binding işlemleri sırasında hata alma olasılığımızı düşüren, yeni nesil bir bağlama yöntemidir.
-     -
+
 
  ViewBinding vs DataBinding:
      - DataBinding, build time üzerinde oldukça olumsuz etkisi vardır.
@@ -59,4 +79,9 @@
       karşılık gelen public alanlar içerir.
       Böylece, activity ya da fragment gibi bir sınıfta View Binding sınıfını
       kullanarak layout dosyanızdaki view'lara erişebilirsiniz.
+
+      ViewBinding, view hiyerarşisini sadece bir kez tarar ve bu tarama sonucunda oluşturulan
+      bağlama nesnesi (Binding nesnesi), bu hiyerarşi içindeki tüm bileşenlere doğrudan erişim sağlar.
+      Bu sayede performans artışı sağlanır ve her seferinde findViewById metodunu kullanarak
+      tekrar tekrar view hiyerarşisini tarama ihtiyacı ortadan kalkar.
 
