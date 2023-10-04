@@ -49,7 +49,6 @@
      Ayrıca binding yapmak istediğim layoutta id'si tanımlanmayan herhangi bir view ögesine
      erişim sağlamam mümkün olmadığı için null hatası almamış oluyorum.
 
-
      2-) Performansı artırır:
      ViewBinding, bileşenleri sadece bir kez inflate eder ve daha sonra onlara doğrudan erişim sağlar.
      Bu, findViewById() yöntemine kıyasla daha hızlı ve verimli bir yöntemdir. findViewById() yönte-

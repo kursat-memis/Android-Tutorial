@@ -2,43 +2,82 @@ package com.kursatmemis.databinding
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.kursatmemis.databinding.R
 import com.kursatmemis.databinding.databinding.ActivityMainBinding
 
 /**
- * DataBinding Temel Kullanim
- * 1. build.gradle(Module:App) dosyasına aşağıdaki kod eklenir:
-
-buildFeatures{
-dataBinding = true
-}
-
- * 2. Layout dosyası içindeki xml kodları, <layout> tagleri arasına alınır ve namespace'ler,
- * <layout ....> kısmındaki noktalı yerde tanımlanır.
- * 3. Bu işlemlerden sonra android studio tarafından otomatik olarak Layout dosyasının adına göre
- * bir binding class'ı oluşturulur. (activity_main.xml ----> ActivityMainBinding)
- * 4. Otomatik olarak oluşturulmuş olan bu binding class'ından bir obje oluşturulur.
- * 5. setContentView(R.layout.activity_main) satırı,
- * DataBindingUtil.setContentView(this, R.layout.activity_main) satırı ile değiştirilir.
- * 5. Oluşturulan bu binding objesi üzerinden layout dosyasındaki view'lara erişilir.
+ * Not: String ve primitive tipler haricinde, xml'e bağlanan objelerin değerleri değiştikçe
+ * ekrandaki view'larda da değerler değişir. String ve diğer primitive tiplerde de bu durumu
+ * uygulamak için ObservableBoolean, ObservableInt, ObservableDouble gibi objeler kullanılır.
  */
 
 /**
- * XML'de Değişken Tanımlama:
- * 1. XML dosyasındaki <data> </data> tagleri arasında <variable> </variable> tagleri oluşturulur.
- * 2. Bu tagi oluşturunca xml bizden otomatik olarak 'name' ve 'type' field'larını doldurmamızı
- * ister.
- * 'name' kısmına oluşturmak istediğimiz değişkenin adını yazıyoruz.
- * 'type' kısmına ise oluşturmak istediğimiz değişkenin tipini yazıyoruz. Eğer bu değişken tipi,
- * bizim oluşturduğumuz bir class ise; type kısmına, [packagename.classname] yazıyoruz.
- * packagename: Class'ın bulunduğu package adı.
- * classname: Class adı.
- * 3. Ardından bu değişkeni atamak istediğimiz component'in attribute'une atıyoruz. (@{} formatı ile.)
- * Örneğin değişken adımız 'age' ise ve bunu textView'ın text attribute'une atamak istiyorsak;
- * android:text="@{age}" şeklinde bir atama yaparız.
+ * DataBinding Nasıl Kullanılır?
+ * 1. build.gradle(module) dosyasında android scope'u içine aşağıdaki kod yazılır:
+    buildFeatures {
+        dataBinding = true
+    }
+ * 2. XML dosyasına gidilerek oradaki view'lar, <layout> </layout> taglerinin arasına alınır.
+ * Ardından root element'deki namespace'ler(xmlns ile başlayan attribute'ler), layout tag'inin
+ * attribute'u olarak taşınır.
+ * (Bunu daha pratik yapmak için; xml'de boş bir alana tıklayıp alt + enter yaptığımızda ortaya
+ * çıkan 'convert to data binding layout' seçeneğine tıklayarak otomatik olarak bu işlemlerin
+ * yapılmasını sağlayabiliriz.)
+ * 3. Activity'de bir binding objesi tanımlanır.
+ * (xml dosyasının adına göre; activity_main.xml ----> ActivityMainBinding)
+ * 4. Binding objesine değer atanarak bu obje başlatılır. Ardından bu objeyi, viewBinding'de
+ * olduğu gibi view'lara erişmek için kullanarabiliriz.
+ */
+
+/**
+ * XML Dosyasında Data Bağlama:
+ * 1. XML dosyasında <data> </data> tagleri içinde, <variable /> tag'i kullanılarak bir değişken
+ * tanımlanır. <variable/> tagindeki 'name' attribute'u ile değişkenin adı, 'type' attribute'u ile
+ * değişkenin tipi belirlenir.
+ * 2. Bu tanımlanan değişken(data), hangi view'da kullanılacaksa o view'a gidilir ve view'ın ilgili
+ * attribute'une '@{}' ifadesi kullanılarak atanır.
+ * 3. onCreate() methodunda binding objesi kullanılarak xml'de tanımlanan variable'ın değer ataması
+ * yapılır.
+ */
+
+/**
+ * View'a Method Bağlama:
+ * XML içinde methodun bulunduğu class tipinde bir variable tanımlanır(örn: toastMessageDisplayer).
+ * Ardından kotlin kodu ile bu değişkene değer atanır.
+ * (binding.toastMessageDisplayer = ToastMessageDisplayer())
+ * Daha sonrasında butonun onClick attribute'une bu method atanır.
+ * (android:onClick="@{toastMessageDisplayer::showToast}")
+ *
+ * Not: Aslında dataBinding kullanmadanda bu işlem yapılabilirdi. Mesela MainActivity içinde
+ * tanımlanmış olan myOnClick(view: View) adında bir methodumuz olsun varsayalım.
+ * XML dosyasında button'un onClick attribute'une direkt methodun adı verilip (onClick = myOnClick),
+ * butona tıklanıldığında bu methodun çalışması sağlanabilirdi.
+ * Ancak burada myOnClick methodunun MainActivity class'ı içinde tanımlanmış olması gerekirdi.
+ * Eğer ki biz tasarımsal kodlamalarımızı MainActivity içinde tutmak istemiyorsak,
+ * burada butona tıklanıldığında çalışacak olan methodu başka bir class'da
+ * tanımlar ve dataBinding sayesinde bu başka class'daki methodu butonun onClick'ine bağlayabiliriz.
+ *
+ * Ayrıca bu iki bağlama tekniği arasındaki önemli farklardan birisi ise şudur;
+ * DataBinding kullanarak bir view'a method bağladığımızda eğer ki böyle bir method yok ise
+ * compiler time'da hata alırız. Hatta uygulamayı çalıştırmadan daha kodu yazarken editör böyle
+ * bir method'un olmadığı konusunda bize uyarı verir.
+ * Ancak diğer türlü dataBinding kullanmadan direkt method adını verdiğimiz zaman, böyle bir methodun
+ * olup olmadığı run time'da kontrol edilir ve eğer böyle bir method yok ise run time'da hata alırız.
+ */
+
+ /**
+ * Method Bağlama vs Listener Bağlama:
+ * Bu ikisi arasındaki en büyük fark; bağladığımız listener, olay gerçekleşince(butona tıkladığımızda)
+ * değil, listener'ı view'a bağladığımız anda oluşur.
+ *
+ * Yani biz bir listener'ı dataBinding kullanarak bir view'a bind ettiğimizde, android bu view'a
+ * tıkladığımızda gerçekleşecek olan işlemleri bu view ile ilişkilendiriyor ve bu view'a
+ * tıklanıldığında bu işlemleri gerçekleştiriyor.
  */
 
 /**
@@ -46,36 +85,6 @@ dataBinding = true
  * android:background="@{isSuccess ? @color/red : @color/green}"
  * Örneğin yukarıdaki kod ile isSuccess değişkeninin değeri true ise, background red olacak,
  * isSuccess değişkenenin değeri false ise background green olacaktır.
- */
-
-/**
- * View'a Method Bağlama:
- * XML içinde nethodun bulunduğu class tipinde bir variable tanımlanır(örn: handler).
- * Ardından kotlin kodu ile bu değişkene değer atanır. (binding.handler = EventHandler())
- * Daha sonrasında butonun onClick attribute'une bu method atanır.
- * (android:onClick="@{handler::buttonOnClick}")
- *
- * Not: Aslında dataBinding kullanmadanda bu işlem yapılabilirdi. Mesela onClick attribute'une
- * direkt methodun adı verilip(onClick = buttonOnClick, butona tıklanıldığında bu methodun
- * çalışması sağlanabilirdi. Ancak burada buttonOnClick methodunun MainActivity class'ı içinde
- * tanımlanmış olması gerekirdi. Eğer ki biz tasarımsal kodlamalarımızı MainActivity içinde
- * tutmak istemiyorsak, burada butona tıknalıldığında çalışacak olan methodu başka bir class'da
- * tanımlar ve dataBinding sayesinde bu başka class'daki methodu butonun onClick'ine bağlayabiliriz.
- */
-
-/**
- * View'a Listener Ekleme:
- * XML içinde nethodun bulunduğu class tipinde bir variable tanımlanır(örn: handler).
- * Ardından kotlin kodu ile bu değişkene değer atanır. (binding.handler = EventHandler())
- * Daha sonrasında butonun onClick attribute'une bu method atanır.
- * android:onClick="@{(view) -> handler.buttonOnClick(view)}"
- * Not: Burada listener eklerken lambla expression kullanılır.
- *
- * Not: View'a buton bağlama ve listener bağlama arasındaki fark 'BAGLANTİNİN NE ZAMAN OLUSTUGUDUR.'
- * Yani view'a buton bağladığımızda, bağlama işlemi, veri ve ui arasında köprü oluşturulduğunda
- * oluşur. Ancak listener bağlamamız ise, olay gerçekleştiğinde olay gerçekleştiğinde olayın
- * dinlenilmesini sağlayan kodu ifade eder. Eğer bir ifade bir olay gerçekleştirildikten sonra
- * değerlendirilecekse o zaman Listener Bağlayıcıları kullanılmalıdır.
  */
 
 class MainActivity : AppCompatActivity() {
@@ -86,28 +95,47 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        // binding objesi üzerinden view'lara erişme.
-        binding.textView1.text = "Data Binding!!!"
+        // ViewBinding gibi kullanımı:
+        binding.titleTextView.text = "DataBinding in Activity"
 
-        // xml'de primitive bir değişken tanımlayıp onu view'a bağlama.
-        binding.myPrimitiveVariable = 10
+        // XML'de tanımlanan variable'a değer atanması:
+        binding.person = Person("Kursat", 24)
 
-        // xml'de referans tipli bir değişken tanımlayıp onu view'a bağlama.
-        // Not: myObj'de yapılan değişikler dinamik olarak textview'ın text'ine de yansır.
-        val myObj = MyClass("First Name")
-        binding.myReferanceVariable = myObj
-        myObj.name = "Second Name" // Ekranda Second Name görünür.
+        // View'a method bağlama:
+        binding.toastMessageDisplayer = ToastMessageDisplayer()
 
-        // Expression Kullanımı
-        binding.isSuccess = true
+        // View'a listener bağlama:
+        binding.greeter = Greeter()
 
-        // View'a method bağlama - Listener ekleme. (Aralarındaki farkı xml'de görebilirsin.)
-        binding.handler = EventHandler()
+        // ArrayList Bağlama:
+        /**
+         * ArrayList'in tipinin belirlenmesi için xml'de aşağıdaki gibi bir tanımlama yapılır;
+         * <variable
+         *  name="personList"
+         *  type="java.util.ArrayList&lt;Person>"/>
+         *  Dikkat edilirse, ArrayList<Person> yerine ArrayList&lt;Person> yazılmıştır.
+         *  Yani '<' işareti yerine '&lt;' ifadesinin kullanılması gerekiyor.
+         */
+        val personList = arrayListOf(Person("ali", 1), Person("mehmet", 2))
+        binding.personList = personList
 
+        // Expression Kullanımı:
+        binding.isSuccess = true // isSuccess değerine göre background arka planda set edilecek.
     }
-
-
 
 }
 
-data class MyClass(var name: String)
+data class Person(val name: String, val age: Int)
+
+class ToastMessageDisplayer {
+    fun showToast(view: View) {
+        Toast.makeText(view.context, "Toast Message", Toast.LENGTH_SHORT).show()
+    }
+}
+
+class Greeter {
+    fun sayHello(view: View, name: String) {
+        Toast.makeText(view.context, "Hello $name", Toast.LENGTH_SHORT).show()
+    }
+}
+

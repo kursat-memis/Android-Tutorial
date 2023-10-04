@@ -1,4 +1,4 @@
- ViewBinding vs DataBinding:
+ViewBinding vs DataBinding:
  - !!! ViewBinding'in ana avantajı hızdır. ViewBinding, DataBinding'e göre hızlıdır.!!!
  - Her ikisinde de android studio tarafından otomatik olarak bir Binding class'ı oluşturulur
  ve bu class'dan bir obje oluşturarak layout dosyamızdaki view'lara erişebiliriz.
