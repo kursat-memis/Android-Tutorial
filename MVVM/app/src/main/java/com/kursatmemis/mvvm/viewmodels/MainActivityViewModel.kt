@@ -1,24 +1,77 @@
 package com.kursatmemis.mvvm.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kursatmemis.mvvm.models.Calculator
+import com.kursatmemis.mvvm.model.Calculator
+
+/**
+ * Kavramlar:
+ * State: Uygulamanın çalışma zamanında mevcut olan veriler state olarak adlandırılır. Örneğin;
+ * Değişkenler, seçilen seçenekler, kullanıcının girdiği bilgiler vb. uygulamanın state'ini oluşturur.
+ * Configuration Changes (Konfigürasyon Değişiklikleri): Cihazın durumunun değiştiği halleri ifade
+ * eder. Örneğin, cihazın ekran döndürülmesi, dil ayarlarının değiştirilmesi veya uygulama arka
+ * planda çalışırken bellekten kaldırılması gibi durumlar konfigürasyon değişikliklerine örnektir.
+ */
+
+/**
+ *   ViewModel:
+ *   - ViewModel, uygulamadaki state'i önbelleğe alarak saklar. Bu sayede uygulamanın state'i
+ *   konfigürasyon değişikleri durumlarına karşılık değerini korur ve bu değerler kaybolmaz.
+ *   - Yani biz cihazı yatay yönde çevirdiğimizde, activity-fragment'lar sıfırdan yeniden oluşmasına
+ *   rağmen, bunların bağlandığı viewModel'lar sıfırdan oluşmaz. Daha önceden oluşturulmuş olan
+ *   viewModel varlığını sürdürmeye devam eder ve bu sayede ekranın yatay çevrilmesi gibi konfigurasyon
+ *   değişikliklerinde viewModel'daki veriler sıfırlanmayacağı için activity veya fragment'ın lifecycle
+ *   methodlarında uygulamanın state'ini manuel olarak kaydedip yönetmemize gerek kalmayacaktır.
+ *   - Yani biz viewmodel'dan veri alarak ui'a aktardığımız bir uygulamada ekranı yan çevirdiğimizde
+ *   herhangi bir lifecycle methodu içinde eski değişkenlerin değerini kaydetme gibi işlem yapmamıza
+ *   gerek kalmadan ui'ın güncel ve doğru halde tekrar oluşmasını sağlarız.
+ *
+ *   ViewModel LifeCycle:
+ *   - ViewModel'lar, bağlandıkları activity veya fragment'lar destory edilene kadar bellekte
+ *   varlıklarını sürdürürler. Ancak burada dikkat etmen gereken önemli bir detay var:
+ *   Ekran yan çevrildiğinde de activity ve fragment'lar önce destory edilip sonra yeniden
+ *   oluşturuluyorlar. Ancak viewModel, acitivity ya da fragment'ın burada tamamen yok edilmediğini,
+ *   sadece cihazın konfigurasyonunun değiştiğini anlıyor. Bundan dolayıda bellekten silinmiyor. Ancak
+ *   bir activity veya fragment'ın konfigurasyon değişikliğinden dolayı değil de gerçekten destoy edil-
+ *   diği durumlarda(uygulamanın kapatılması, bir activity'nin finish() methodu ile destroy edilmesi vb.)
+ *   viewModel bunun gerçek bir destroy olduğunu anlayıp, onCleared() methodunun çağrarak bellekten
+ *   siliniyor.
+ *
+ *   - Yani ViewModel'lar, Activitiy ya da fragment'ların life cycle'ından değil cihazın konfigürasyon
+ *    değişikliklerinden bağımsızdırlar.
+ *
+ *   - Aşağıdaki resimde de görüldüğü gibi, ekran yan çevrildiğinde viewmodel ölmez, activity gerçekten
+ *    yıkıldığında ölür.
+ *    https://i.stack.imgur.com/Qz5pE.png
+ *
+ *   - onCleared(): ViewModel bellekten silinmeden önce çalışan lifecycle methodu.
+ *
+ *   Bir ViewModel'ı başka bir Activity ile paylaşabilir miyiz?
+ *   Bunu activitiyler ile yapamazsın. Ama fragment'lar, bulunduğu activity'nin context'ini paylaşarak
+ *   bunu yapabilir.
+ */
 
 class MainActivityViewModel : ViewModel() {
-    var calculatorResult: MutableLiveData<Calculator>
+    var calculator: MutableLiveData<Calculator>
 
     init {
         val calculator = Calculator("0", "0", "0")
-        calculatorResult = MutableLiveData(calculator)
+        this.calculator = MutableLiveData(calculator)
     }
 
     fun add(calculator: Calculator) {
         val result = (calculator.number1.toInt() + calculator.number2.toInt()).toString()
-        calculatorResult.value = Calculator(calculator.number1, calculator.number2, result)
+        this.calculator.value = Calculator(calculator.number1, calculator.number2, result)
     }
 
     fun multiply(calculator: Calculator) {
         val result = (calculator.number1.toInt() * calculator.number2.toInt()).toString()
-        calculatorResult.value = Calculator(calculator.number1, calculator.number2, result)
+        this.calculator.value = Calculator(calculator.number1, calculator.number2, result)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.w("mKm - viewmodel", "onCleared()")
     }
 }

@@ -1,4 +1,4 @@
-package com.kursatmemis.mvvm.models
+package com.kursatmemis.mvvm.model
 
 data class Calculator(
     val number1: String,
