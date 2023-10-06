@@ -1,0 +1,45 @@
+   Kavramlar:
+   1. Observable(Gözlemlenebilir)
+   - Bu data(veri) tutan bir nesnedir. Bu nesnenin tuttuğu verinin değeri değişirse, bu nesne
+   bu verileri observe eden(gözlemleyen) diğer bileşenlere(observer'lara) bildirim gönderir.
+   2. Observer(Gözlemci)
+   - Observable objeler'in tutuğu verilerdeki değişiklikleri gözlemleyen objelerdir.
+
+   Yani biz observable bir obje oluşturup bu obje içinde bir değişken tutarız.
+   Ardından bu değişkenin değeri değişirse, observable obje observar'a bildirim gönderir.
+   Bildirimi alan observer ise bu değişkenin değeri değiştiğinde bizim yapmasını istediğimiz
+   işlemleri gerçekleştirir.
+   Nasıl ki bir bir listener, butonun tıklanılma durumunda yapılmasını istediğim işlemleri yapıyor
+   ise; bir observer'da bir değişkenin değerinde değişiklik olduğunda yapılmasını istediğim
+   işlemleri yapar. Listener'lar event'ları(olayları) takip ederken observer'lar değişkenlerin
+   değerlerini takip ederler.
+
+   LiveData Nedir:
+   - LiveData, observable(gözlemlenebilir) bir veri tutma sınıfıdır.
+   - LiveData'nın kotlindeki diğer observable değişkenlerden farkı 'Life Cycle Aware' olmasıdır.
+     Yani LiveData, activity ya da fragment gibi yapıların life cycle'larından haberdardır.
+     Yani örneğin bir Activity’de LiveData’nın değişikli gözlemleyen bir Observer varsa,
+     Activity destroy olduğu zaman bu değişikliği gözlemleyen bağ da ortadan kaldırılır.
+
+   LiveData Avantajları:
+   1. Kullanıcı arayüzü ile veri durumunun eşleşmesini garanti eder:
+   LiveData, veri değişikliklerini Observer'lara bildirerek, UI güncellemelerini otomatikleştirir.
+   Bu durumda, veri değiştiğinde Observer tarafından UI güncellenir. Bu sayede, UI'nın manuel olarak
+   güncellenmesine gerek kalmaz.
+
+   2. Memory Leak yoktur:
+   Örneğin, bir aktivite duraklatıldığında veya yok edildiğinde, bu aktiviteye bağlı olan
+   observerlar artık aktif değildir ve bu observerlar LiveData'dan güncellemeler alamazlar.
+   LiveData, bu tür durumlarda bu observerları temizleyerek bellekte gereksiz referansları serbest
+   bırakır.
+
+   3. Stopped durumdaki Activityler de crashleri önler:
+   Eğer bir aktivite "Stopped" durumundayken, bir asenkron işlem tamamlanıp bu aktiviteye
+   erişmeye çalışırsa, bu durumda uygulama çökebilir (crash). Örneğin, bir asenkron işlem
+   tamamlandığında aktivitenin içindeki bir nesneyi güncellemeye çalışmak hata yaratabilir
+   çünkü aktivite "Stopped" durumunda ve bu durumda ilgili nesnelere erişim kısıtlıdır.
+
+   LiveData, bu tür senaryolarda yardımcı olabilir. Eğer LiveData kullanılarak bu asenkron işlemler
+   sonucunda gelen veriler yönetiliyorsa ve bu LiveData "Stopped" durumdaki bir aktiviteye bağlıysa,
+   LiveData bu durumu fark eder ve bu aktiviteye veri güncellemesi yapmaz. Bu durumda, uygulamanın
+   çökmesini engellemiş olur.

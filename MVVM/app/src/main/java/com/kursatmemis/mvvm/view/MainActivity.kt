@@ -19,6 +19,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // owner parametresi: ViewModel'ın bağlı olduğu lifecycle'a sahip yapının referansını ister.
+        // ViewModel, burada gönderilen referansa sahip activity'nin varlığına göre bellekte
+        // varlığını sürdürecektir.
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         /**
