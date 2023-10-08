@@ -1,0 +1,89 @@
+
+ Scope Tablosu:
+ - Aşağıdaki tabloya bakaran bir modülün/hilt bileşeninin hangi bileşende oluştuğunu ve
+  scope'unun ne olduğunu görebiliriz.
+ https://developer.android.com/training/dependency-injection/hilt-android#component-scopes
+
+ Scope Kullanımı:
+
+     Örnek 1: Singleton Scope:
+     - Bir uygulama içinde genellikle tek bir örneği olması gereken, her yerde paylaşılan bir
+     nesne düşünün. Bu tür bir durumda @Singleton scope'u kullanılabilir.
+
+             @Singleton
+             class NetworkManager @Inject constructor() {
+                 // Network operations
+             }
+
+     Burada NetworkManager sınıfı @Singleton scope'u ile işaretlenmiştir. Bu, uygulama yaşam döngüsü
+     boyunca sadece bir kez oluşturulacak ve diğer bileşenlerle paylaşılacaktır.
+
+     Örnek 2: ViewModelScoped:
+     @ViewModelScoped kapsamı, bir ViewModel'in yaşam döngüsü boyunca geçerli olacak bağımlılıkları
+     temsil eder. Bu, ViewModel oluşturulduğunda bağımlılığın oluşturulması ve ViewModel yok
+     edildiğinde bağımlılığın yok edilmesi anlamına gelir.
+
+            @ViewModelScoped
+            class UserRepository @Inject constructor() {
+                // User data operations
+            }
+
+     Bu UserRepository sınıfı, @ViewModelScoped kapsamı ile işaretlenmiştir. Bu, bir ViewModel
+     tarafından kullanılacak bağımlılıkların ViewModel'in yaşam döngüsü ile uyumlu şekilde
+     oluşturulmasını ve yok edilmesini sağlar. Yani ViewModel oluştuğunda, bu bağımlılık
+     oluşturulacak ve ViewModel yok edildiğinde bu bağımlılıkta bellekten yok edilecektir.
+
+     Örnek 3: ActivityScoped ve FragmentScoped:
+     - Bir aktivite içinde veya bir fragment içinde yaşam döngüsü boyunca geçerli olan
+     bağımlılıkları ele alalım. Bu tür bağımlılıklar, aktivite veya fragment oluşturulduğunda
+     oluşturulmalı ve yok edildiklerinde yok edilmelidir.
+
+            @ActivityScoped
+            class ActivityDataManager @Inject constructor() {
+                // Activity-specific operations
+            }
+
+            @FragmentScoped
+            class FragmentRepository @Inject constructor() {
+                // Fragment-specific operations
+            }
+
+     Burada ActivityDataManager ve FragmentRepository sınıfları, @ActivityScoped ve @FragmentScoped
+     kapsamları ile işaretlenmiştir. Bu, aktivite veya fragment oluşturulduğunda bu bağımlılıklar da
+     oluşturulacak ve yok edildiğinde yok edilecektir.
+
+
+  Not: Herhangi bir scope belirtmezsek, bağımlılık her istendiğinde yeni bir örneği oluşturulacak ve
+  bu bağımlılıkların yaşam süresi, bağlama enjekte edildiği süre boyunca sınırlı olacaktır.
+  Yani, bir bağımlılığı istediğiniz her yerde çağırdığınızda, yeni bir örneği oluşturulacak ve bu
+  bağımlılık sadece o çağrı sırasında kullanılacaktır.
+
+
+  Scope'ları Neden Kullanalım?
+  - Scope'ları belirlemek, dependency'lerin yaşam döngülerini ve paylaşımlarını düzenleyerek,
+  bellek yönetiminin verimli olmasını ve kod kalitesini arttırılmasını sağlar.
+
+  Scope Kullanmanın Avantajları:
+  1. Performans İyileştirilmesi:
+  Dependency'lerin uygun kapsamlarda kullanılması, gereksiz tekrar oluşturmaların önüne geçer ve
+  bu da uygulamanın performansını artırır. Örneğin, bir bağımlılığı her defasında yeniden oluşturmak
+  yerine, bir kapsam içinde paylaşarak ve yeniden kullanarak performansı artırabilirsiniz.
+
+  2. Bellek Yönetimi:
+  Dependency'lerin uygun kapsamlarda yönetilmesi, gereksiz bellek kullanımını azaltır.
+  Örneğin, uygulama genelinde paylaşılması gerekli olmayan bağımlılıkların, sadece ihtiyaç olduğu
+  kapsamlarda oluşturulması, bellek kaynaklarının daha verimli kullanılmasını sağlar.
+
+  3. Kod Okunabilirliği ve Bakım Kolaylığı:
+  Scope'lar, kodunuzun hangi bağımlılığın hangi yaşam süresine sahip olduğunu açıkça belirtir.
+  Bu, kodun okunabilirliğini artırır ve bakım süreçlerini kolaylaştırır.
+
+  4. Veri Bütünlüğü ve Güvenliği:
+  Bağımlılıkların belirli bir kapsamda sınırlı olması, bağımlılıkların yanlış yerlerde
+  değiştirilmesini ve beklenmedik durumların ortaya çıkmasını engeller.
+  Bu, uygulamanın veri bütünlüğünü ve güvenliğini artırır.
+
+  5. Mantıklı Kapsamlar:
+  Bağımlılıkların doğru kapsamda oluşturulması, uygulamanın mantığına uygun olarak paylaşılmasını
+  sağlar. Örneğin, aktiviteye özgü bağımlılıkların @ActivityScoped kapsamında oluşturulması,
+  bu bağımlılıkların aktivite yaşam döngüsüyle uyumlu şekilde paylaşılmasını sağlar.

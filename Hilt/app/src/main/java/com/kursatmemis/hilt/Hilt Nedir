@@ -1,0 +1,53 @@
+
+ Hilt Nedir?
+ - Hilt, bir Dependency Injection kütüphanesidir.
+ - Hilt, dependency'lerin yönetimini manuel olarak developerların yapması yerine otomatik olarak
+   android tarafından yapılmasını sağlayan bir kütüohanedir.
+ - Dagger'ın üzerine inşa edilmiş ve android için özel olarak tasarlanmıştır.
+
+ Neden Hilt Kullanalım?
+ Örneğin aşağıdaki gibi class'larımız olsun:
+
+ class Musician(val band: Band, val instrument: Instrument)
+
+ class Band()
+
+ class Instrument()
+
+ Şimdi Musician class'ından bir obje oluşturmak isteyelim. Aşağıdaki kodu yazmamız gerekiyor:
+    val band = Band()
+    val instrument = Instrument()
+    val musician = Musician(band, instrument)
+
+  Görüldüğü gibi sırf musician objesi oluşturmak için band ve instrument adında 2 obje daha oluşturmam
+  gerekiyor. Şimdi bir soru; ya band objesi oluşturmak için x ve y adında 2 obje daha oluşturmak ve
+  instrument objesi oluşturmak için de a, b, c adında 3 obje oluşturmamız gerekseydi ne olurdu?
+  Cevap: Tabikide sırf musician adında bir obje oluşturacağım diye gidip o kadar obje oluşturmak
+  bizi yorardı, zamandan kaybederdik ve gereksiz bir kod kalabalığı olurdu.
+
+  Görüldüğü üzere dependency'leri manuel olarak bizim yönetmemiz çok sağlıklı bir şey değil. İşte
+  hilt, bunu bizim yerimize kendisi üstlenmek için var!!!
+  Özellikle class'ları test ederken hilt çok avantaj sağlıyor. Örneğin musician objesini test edeceğim
+  zaman gidip bir sürü daha obje oluşturmama gerek kalmıyor ve daha kısa sürede testimi
+  gerçekleştirebiliyorum.
+
+  Eğer Hilt Kullanmazsanız;
+  1. Bağımlılıkları elle yönetmek zorunda kalırsınız, bu da karmaşıklaşabilir ve hata yapma
+  olasılığını artırabilir.
+  2. Kodunuzda tekrarlanan bağımlılık oluşturma kodları olabilir, bu da kod tekrarı ve bakım
+  zorluğuna yol açabilir.
+  3. Birim testler yazarken eçici nesneler oluşturmak zorunda kalabilirsiniz.
+
+ Son olarak; biz Hilt tarafından sağlanan dependency'lerin scope'larını, yani ne yaşam sürelerini
+ belirleyebiliyoruz. Ve Hilt bu belirlediğimiz scope'lar doğrultusunda dependency'lerin gereksiz
+ yere bellekte kalmasını veya gereksiz yere tekrar tekrar oluşturulmasını önleyerek daha performanslı
+ bir uygulama elde etmemizi sağlıyor.
+
+ Örneğin bir dependency için @Singleton kullanarak bunun scope'unu Application belirleriz. Ve artık
+ tüm uygulama boyunca bu dependency'e ihtiyaç duyulduğunda bu obje tekrar oluşturulmayacak ve daha
+ önce oluşturulan obje kullanılacaktır. Bu sayede tekrar tekrar obje oluşturulup performanstan
+ kayıp yaşanmayacaktır.
+
+ Veya bir dependency için @FragmentScoped kullanarak bunun scope'unu Fragment olarak belirleriz.
+ Ardından bu dependency Fragment içinde ihtiyaç duyulduğunda oluşturulur ve Fragment yıkıldığında
+ otomatik olarak bu dependency'de bellekten silinir. Bu da belleğin gereksiz yere şişmesini önler.
