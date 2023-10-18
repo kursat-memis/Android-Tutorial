@@ -58,6 +58,13 @@
   Yani, bir bağımlılığı istediğiniz her yerde çağırdığınızda, yeni bir örneği oluşturulacak ve bu
   bağımlılık sadece o çağrı sırasında kullanılacaktır.
 
+  ActivityRetainedComponent vs ActivityComponent:
+    Her iki component ile belirtilmiş modüldeki dependency'lerde activity var olduğunda oluşur ve
+    activity destory edildiğinde bellekten yok edilir. Ancak ActivityComponent ile oluşturulmuş
+    modüldeki dependency'ler, ekranı yan çevirdiğimizde de bellekten silinir ve tekrar oluşturulur.
+    Bun karşılık ActivityRetainedComponent ile oluşturulmuş modüldeki dependency'ler ise konfigurasyon
+    değişikliklerine karşılık bellekten silinip yeniden oluşturulmazlar. KOnfigurasyon değişse bile
+    aynı objeyi dependency olarak sağlamaya devam ederler.
 
   Scope'ları Neden Kullanalım?
   - Scope'ları belirlemek, dependency'lerin yaşam döngülerini ve paylaşımlarını düzenleyerek,

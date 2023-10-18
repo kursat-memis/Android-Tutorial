@@ -2,7 +2,8 @@
  Hilt Nedir?
  - Hilt, bir Dependency Injection kütüphanesidir.
  - Hilt, dependency'lerin yönetimini manuel olarak developerların yapması yerine otomatik olarak
-   android tarafından yapılmasını sağlayan bir kütüohanedir.
+   android tarafından yapılmasını sağlayan ve bu dependency'lerin yaşam sürelerini otomatik olarak
+   yöneten bir kütüphanedir.
  - Dagger'ın üzerine inşa edilmiş ve android için özel olarak tasarlanmıştır.
 
  Neden Hilt Kullanalım?
@@ -31,12 +32,18 @@
   zaman gidip bir sürü daha obje oluşturmama gerek kalmıyor ve daha kısa sürede testimi
   gerçekleştirebiliyorum.
 
+  Ek olarak hilt, sağladığı dependency'lerin yaşam sürelerini de kendisi yönetiyor. Bu da memory
+  leak'lerin önüne geçiyor. Mesela fragment objesi, fragment destroy edilse bile bellekte
+  kalabiliyor ve fragment'ların içinde tanımlanan dependency'ler bellekte yer edinmeye devam
+  edebiliyorlar. Ancak hilt ile bu dependency'ler sağlandığında, bunların yaşam ömrünü hilt otomatik
+  olarak yönetiyor.
+
   Eğer Hilt Kullanmazsanız;
   1. Bağımlılıkları elle yönetmek zorunda kalırsınız, bu da karmaşıklaşabilir ve hata yapma
   olasılığını artırabilir.
   2. Kodunuzda tekrarlanan bağımlılık oluşturma kodları olabilir, bu da kod tekrarı ve bakım
   zorluğuna yol açabilir.
-  3. Birim testler yazarken eçici nesneler oluşturmak zorunda kalabilirsiniz.
+  3. Birim testler yazarken geçici nesneler oluşturmak zorunda kalabilirsiniz.
 
  Son olarak; biz Hilt tarafından sağlanan dependency'lerin scope'larını, yani ne yaşam sürelerini
  belirleyebiliyoruz. Ve Hilt bu belirlediğimiz scope'lar doğrultusunda dependency'lerin gereksiz
