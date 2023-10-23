@@ -27,13 +27,17 @@
         <variable
             name="isSuccess"
             type="Boolean" />
+
+        <variable
+            name="kisi"
+            type="com.kursatmemis.databinding.Kisi" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity"
-        android:background="@{isSuccess ? @color/green : @color/blue}">
+        android:background="@{isSuccess ? @color/green : @color/blue}"
+        tools:context=".MainActivity">
 
         <TextView
             android:id="@+id/titleTextView"
@@ -63,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="Show Toast - 1"
             android:onClick="@{toastMessageDisplayer::showToast}"
+            android:text="Show Toast - 1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/nameTextView" />
 
@@ -83,10 +87,32 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:textSize="18sp"
             android:text="@{personList[0].name}"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/button2"
             app:layout_constraintTop_toBottomOf="@+id/button2" />
+
+        <Button
+            android:id="@+id/changeNameButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="150dp"
+            android:text="Change Name Value"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/myNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:text="@{kisi.name}"
+            app:layout_constraintBottom_toTopOf="@+id/changeNameButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

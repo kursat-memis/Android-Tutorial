@@ -8,12 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ObservableField
+import androidx.lifecycle.MutableLiveData
 import com.kursatmemis.databinding.databinding.ActivityMainBinding
 
 /**
- * Not: String ve primitive tipler haricinde, xml'e bağlanan objelerin değerleri değiştikçe
- * ekrandaki view'larda da değerler değişir. String ve diğer primitive tiplerde de bu durumu
- * uygulamak için ObservableBoolean, ObservableInt, ObservableDouble gibi objeler kullanılır.
+ * Not: Xml'e bağlanan objelerin değerleri değiştikçe ekrandaki view'larda da değerlerin değişmesini
+ * istiyorsak ObservableField objelerini kullanarak bunu sağlayabiliriz.
  */
 
 /**
@@ -78,6 +79,13 @@ import com.kursatmemis.databinding.databinding.ActivityMainBinding
  * Yani biz bir listener'ı dataBinding kullanarak bir view'a bind ettiğimizde, android bu view'a
  * tıkladığımızda gerçekleşecek olan işlemleri bu view ile ilişkilendiriyor ve bu view'a
  * tıklanıldığında bu işlemleri gerçekleştiriyor.
+
+  * Android Dökümanı:
+  The major difference between method references and listener bindings is that the actual listener
+  implementation is created when the data is bound, not when the event is triggered.
+  If you prefer to evaluate the expression when the event happens, use listener bindings.
+
+
  */
 
 /**
@@ -121,11 +129,24 @@ class MainActivity : AppCompatActivity() {
 
         // Expression Kullanımı:
         binding.isSuccess = true // isSuccess değerine göre background arka planda set edilecek.
+
+        // Obje değeri değiştiğinde view'ında değerinin otomatik değişmesi:
+        val kisi = Kisi("Kursat")
+        binding.kisi = kisi
+
+        binding.changeNameButton.setOnClickListener {
+            kisi.name.set("Yeni Usim")
+        }
+
     }
 
 }
 
 data class Person(val name: String, val age: Int)
+
+class Kisi(name: String) {
+    var name = ObservableField(name)
+}
 
 class ToastMessageDisplayer {
     fun showToast(view: View) {
