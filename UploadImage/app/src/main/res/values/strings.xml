@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UploadImage</string>
+    <string name="click_imageview_to_select_an_image_from_gallery">Click imageView to select an image from gallery</string>
 </resources>
