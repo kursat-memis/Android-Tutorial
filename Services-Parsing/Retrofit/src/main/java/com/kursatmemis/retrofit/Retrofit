@@ -1,0 +1,72 @@
+
+  API (Application Programming Interface):
+  - API, Java'daki Spring Boot gibi framework'ler ile oluşturulmuş, iki sistem arasında
+    veri alışverişi yapmamızı sağlayan arayüzlerdir.
+  - Yani; iki sistem/yazılım arasında iletişim kurulmasını sağlarlar.
+    Örneğin; biz araba kullanırken direksiyon üzerinden tekerlekleri yönetebilmekteyiz.
+    Direksiyonun buradaki görevi; bizim tekerleklerle iletişimizi sağlamaktır. Yani direksiyon,
+    bizim tekerleklerle iletişimimizi sağlayan bir arayüzdür.
+    API'de tıpkı bunun gibidir. Uygulamalarımızın sunucuyla iletişim kurmasını sağlayan bir arayüz
+    olarak faaliyet gösterir.
+  - API'lerin nasıl kullanılacağı API dökümantasyonlarında anlatılır.
+
+  Client(İstemci):
+  - API'ye istek gönderen ve yanıt alan yazılımdır.
+  - Örneğin, mobil bir hava durumu uygulaması, hava durumu API'sine istek göndererek güncel hava
+    durumunu bilgilerini almak ister. İşte bu mobil uygulama bir istemcidir.
+
+  Server(Sunucu):
+  - API'ye gelen istekleri işleyen ve yanıtları gönderen yazılımdır.
+  - Örneğin, bir hava durumu API'si, hava durumu verilerini barındıran bir sunucu üzerinde çalışır.
+
+  Örnek Senaryo:
+  Bir hava durumu uygulaması düşün. Bu uygulama, hava durumu bilgilerini göstermek için bir
+  API kullanır.
+
+  İstemci: Hava durumu uygulaması
+  API: Hava durumu API'si
+  Sunucu: Hava durumu API'sini barındıran sunucu
+
+  Uygulama, hava durumu API'sine bir istek göndererek güncel hava durumunu sorar. Sunucu, istekleri
+  işler ve hava durumu bilgilerini içeren bir yanıt gönderir. Uygulama, bu yanıtları kullanarak
+  kullanıcıya güncel hava durumunu gösterir.
+
+  Kotlin ile API Kullanımı:
+  - Kotlin'de API'ler ile çalışmak için çeşitli kütüphaneler mevcuttur.
+  - En popüler kütüphanelerden biri Retrofit'tir.
+  - Retrofit, API'lere istek göndermeyi ve yanıtları almayı kolaylaştırır.
+
+ Retrofit Nedir:
+ -> Retrofit bir kütüphanedir.
+ -> Retrofit, Android uygulamaların RESTful API'lerle iletişim kurmalarını sağlayan bir kütüphanedir.
+    RESTful API: İki bilgisayar sisteminin internet üzerinden bilgi alış-verişi yapmasını sağlayan
+                 bir API çeşitidir.
+ -> Retrfot, açık kaynak kodlu bir rest istemcisidir.
+    Rest İstemcisi: RESTful API'lerle iletişim kuran bir bileşen.
+ -> Retrofit, bir network kütüphanesidir.
+    Network Kütüphanesi: İnternet üzerindeki verilerle iletişim kurmamızı sağlayan bir kütüphane.
+
+ -> Web sayfalarından JSON veya XML gibi fotmatlardaki verileri çekmemizi sağlayan bir kütüphanedir.
+
+ -> Bu kütüphane, Restful web servislerine yapılan istekleri kolay bir şekilde yönetmeyi sağlar.
+ -> Retrofit ile Json Parsing, Gson ile kolayca yapılabilir.
+ -> Retrofit bir rest istemcisidir.
+    Rest İstemcisi: Bir RESTful API'ye HTTP protokolü üzerinden istekler göndermek ve sunucudan
+    yanıt almak için kullanılan bir istemcidir.
+
+ Retrofit Avatajları:
+ -> Eskiden sunucudan veri çekmek için aşağıdaki yapılar kullanılırmış:
+    -> AsyncTask: Yavaş çalışır ve memory leak'e sebep oluyormuş.
+    -> Volley: AsyncTask yöntemine göre daha verimlidir. Ancak Retrofit'e göre daha karmaşık kod
+               yazmamıza sebep olur. Ayrıca Retrofit gibi RxJava kullanımı için resmi bir desteği
+               yoktur. Ayrıca, sunucudan gelen JSON verilerini Retrofit gibi otomatik olarak
+               Kotlin objelerine dönüştürmez. Bunu manuel olarak bize bırakır.
+
+ -> Retrofit, diğer yöntemlere göre;
+    - Daha hızlıdır.
+    - Kullanımı daha kolaydır.
+    - JSON verilerini otomatik olarak Kotlin objelerine çevirebilir.
+      [Bunu kendisi yapmıyor. Google'ın ürettiği ve Retrofit ile uyumlu bir şekilde çalışan
+      GSON kütüphanesi yapıyor. Eğer internetten XML formatında veriler geliyorsa onların otomatik
+      olarak Kotlin objelerine dönüştürülmesini sağlayan XML converter kütüphaneler kullanmalıyız.]
+    - RxJava ile uyumlu bir şekilde çalışabilir.

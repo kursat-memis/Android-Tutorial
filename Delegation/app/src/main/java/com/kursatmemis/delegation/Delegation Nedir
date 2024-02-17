@@ -1,0 +1,14 @@
+
+ Boilerplate: Birçok yerde değiştirilmeden kullanılan kod.
+
+ Delegation( Delegasyon):
+ - Delegation, bir işi yapması gereken birinin o işi başka birine devretmesidir. Mesela
+   bir yönetici, yapması gereken bir işi bu işi yapması için bir çalışanına devrediyorsa bu bir
+   delegasyondur.
+ - Yazılımdaki delegasyonda tıpkı böyledir. Poilerplate kod yazmaktan bizi kurtarır ve bir nevi
+   çoklu kalıtım sağlar.
+
+ İki çeşit delegasyon vardır;
+ 1. Explicit Delegasyon:
+
+ 2.
