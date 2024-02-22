@@ -1,36 +1,66 @@
-Navigation: Uygulamada ekranlar arasında geçiş yapmamıza verilen isimdir.
 
-Biz normalde ekran geçişlerini manuel olarak kendimiz kontrol ederdik.
-Navigation Component, bu ekran geçişlerini daha tutarlı bir şekilde yapmamızı sağlar.
-Bunun yanında geri butonuna basılması, veri taşıma, animasyon gibi konularda da
-işimizi kolaylaştırır.
+    Navigation: Uygulamada ekranlar arasında geçiş yapmamıza verilen isimdir.
 
-Navigation Component:
-Jetpack kütüphanesinin bir parçasıdır ve uygulama içindeki navigasyonların daha kolay yönetilmesi
-için tasarlanmış bir araçtır.  Bu bileşen, uygulamanın farklı ekranları arasındaki gezinmeyi
-basitleştirmek ve düzenlemek için kullanılır.
+    Biz normalde ekran geçişlerini manuel olarak kendimiz kontrol ederdik.
+    Navigation Component, bu ekran geçişlerini daha tutarlı bir şekilde yapmamızı sağlar.
 
-Navigation Component 3 Bileşenden Oluşur:
-1. NavigationGraph: Ekranların ve geçişleri barındıran bir XML dosyası.
-2. NavHost: Uygulamadaki ekranların üzerinde göründüğü ortamdır.
-(Activity'e bir view olarak ekliyoruz ve fragment'lar bunun üzerinde gözüküyor.)
-3. NavController: Navigation Graph içindeki ekranlar arasında geçiş yapma işlemlerimizi yöneten
-yapıdır.
+    Jetpack = Geliştiricilerin yüksek kaliteli uygulamaları daha kolay yazmasına yardımcı
+              olmak için bir kütüphane, araç ve kılavuz paketidir. [Google böyle tanımlar.]
 
-Navigation Component Avantajları:
-1. Fragment Geçiş İşlemlerini Handle Eder:
-- Navigation Component ile fragment'lar arasındaki geçiş işlemlerini kontrol edebilir ve bunları
-yönetebiliriz.
-2. Geçiş işlemleri için kolay bir şekilde animasyonlar eklemeyi sağlar.
-3. Navigation UI Pattern İçerir:
-4. Deep linking işlemini handle eder.
-   Deep Linking: Uygulama içinde farklı ekranlara/sitelere yönlendiren linkler.
-5. Navigation Editor sayesinde Navigation Graph üzerindeki ekranları ve bunlar arasındaki geçişleri
-daha kolay görebiliriz.
-6. Back tuşunu tüm activity'i yıkacak şekilde değilde bir önceki fragment'a geçecek şekilde
-kullanır. Eğer istersen kolay bir şekilde back tuşunun davranışlarını değiştirebiliriz.
-7. Navigation UI'lar ile Uyumlu Çalışır (Navigation drawers, Bottom navigation vs).
+    Navigation Component:
+    Jetpack kütüphanesinin bir parçasıdır ve uygulama içindeki navigasyonların daha kolay yönetilmesi
+    için tasarlanmış bir araçtır. Bu bileşen, uygulamanın farklı ekranları arasındaki gezinmeyi
+    basitleştirmek ve düzenlemek için kullanılır.
 
-Not: Navigation Component ile activity'leri de yönetmeye çalışabiliriz ancak bu yapı fragment'lar
-için tasarlandığından dolayı activity'lerle, fragment'lar kadar iyi bir uyum sağlamayacaktır ve
-fragment'ların yönetimi kadar kolay yönetim gerçekleştiremeyeceğiz.
+    Navigation Component 3 Bileşenden Oluşur:
+    1. NavigationGraph: Ekranların ve geçişleri barındıran bir XML dosyası.
+    2. NavHost: Uygulamadaki ekranların üzerinde göründüğü container.
+    (Activity'e bir view olarak ekliyoruz ve fragment'lar bunun üzerinde gözüküyor.)
+    3. NavController: Navigation Graph içindeki ekranlar arasında geçiş yapma işlemlerimizi yöneten
+    yapıdır.
+
+    Nav Editor: Nav Graph'ı görsel olarak görmemi ve yönetmemi sağlayan panel.
+
+    Navigation Component Avantajları:
+    1. Fragment Geçiş İşlemlerini Handle Eder:
+    - Navigation Component ile fragment'lar arasındaki geçiş işlemlerini kontrol edebilir ve bunları
+    yönetebiliriz.
+    2. Geçiş işlemleri içine kolay bir şekilde animasyonlar eklemyi sağlar.
+    3. Navigation UI Pattern İçerir:
+    4. Deep linking işlemini handle eder.
+       Deep Linking: Belirli bir içeriğe/sayfaya/activity'e doğrudan erişim sağlayan URL'lerdir.
+                     Mesela A activity'sinde bulunan deep link'e tıklayarak B activity'sindeki bir içeriğe
+                     direkt ulaşabiliyorum. Veya deep link üzerinden bir web sayfasındaki bir içeriğe
+                     ulaşabiliyorum.
+
+    6. Back tuşunu tüm activity'i yıkacak şekilde değilde bir önceki fragment'a geçecek şekilde
+    kullanır. Eğer istersen kolay bir şekilde back tuşunun davranışlarını değiştirebiliriz.
+    7. Navigation UI'lar ile Uyumlu Çalışır (Navigation drawers, Bottom navigation vs).
+    8. Fragment'lar arasında veri taşımak için Safe Args sağlar.
+       Safe Args: Derleme zamanında değişkenlerin tür güvenliğini sağlar. Böylece hatalı bir veri
+       taşınması sırasında hatayı run time'da değil compiler time'da alırız. Bu sayede kodlarımız
+       daha güvenli olur. [Intent'ler tür güvenliği sağlamaz. Intent'ler ile taşıdığımız verilerin
+                          türleri run time'da kontrol edilir ve bunun neticesinde run time'da hata
+                          alabiliriz.]
+    9. Fragment'lar arası geçişte kolayca animasyon vb. eklememizi sağlar.
+
+    Not: Navigation Component ile activity'leri de yönetmeye çalışabiliriz ancak bu yapı fragment'lar
+    için tasarlandığından dolayı activity'lerle, fragment'lar kadar iyi bir uyum sağlamayacaktır ve
+    fragment'ların yönetimi kadar kolay yönetim gerçekleştiremeyeceğiz.
+
+    Navigation Editor'de, Destination seçerken karşımıza çıkan Place Holder Nedir?
+    Navigation'da "placeholder" bir hedefi temsil eden bir işaretçidir. Placeholder, genellikle belirli
+    bir fragment veya başka bir hedef yerine geçici olarak kullanılır.
+    Bu, belirli bir hedefin daha sonra programlama tarafından dinamik olarak belirlenmesini sağlar.
+
+    Placeholder'lar, özellikle dinamik olarak değişen içeriğe sahip uygulamalarda kullanışlıdır.
+    Örneğin, belirli bir fragmenti veya hedefi bir koşula veya kullanıcı etkileşimine bağlı olarak
+    değiştirmek istediğinizde placeholder'lar kullanılabilir.
+
+    Placeholder'lar, Navigation Component içinde kullanılan yönlendirme grafiklerini (navigation graph)
+    esnek ve dinamik hale getirir. Bu sayede, belirli bir fragmentin veya hedefin yerine geçici olarak
+    bir placeholder kullanarak, daha sonra programlama tarafından bu hedefin belirlenmesi sağlanabilir.
+
+    Özetle, placeholder'lar Navigation Component içindeki hedeflerin dinamik olarak belirlenmesini
+    sağlayan bir mekanizmadır ve belirli bir hedefin yerine geçici olarak kullanılırlar. Bu, uygulama
+    içeriğinin dinamik yapısını destekler ve esnek bir navigasyon deneyimi sağlar.

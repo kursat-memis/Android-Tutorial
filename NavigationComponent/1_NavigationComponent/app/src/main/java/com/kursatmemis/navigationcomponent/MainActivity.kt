@@ -9,6 +9,28 @@ import android.os.Bundle
  */
 
 /**
+ * Önemli LifeCycle Notu:
+ * Diyelim ki A ve B fragment'larımız var. A fragment'ından B fragment'ına bir action'ınımız var.
+ * Ve B fragment'ından da A fragment'ına bir actionımız var. A ve B fragment'larının üzerinde
+ * bulunan butonlara bastığımızda bu actionlar gerçekleşiyor. Eğer biz A'dan B'ye geçiş yaparsak;
+ * A'nın sadece view'ı yıkılır ve kendisi bellekte tutulmaya devam eder. (Detach işlemi.) Haliyle de
+ * sadece view'ın yıkıldığı lifecycle methodları A için çalışır. [onPause, onStop, onDestroyView]
+ * B ise sıfırdan oluşurulur ve tüm oluşturucu lifecycle methodları çalışır. B fragment'ı üzerindeyken
+ * 'back' tuşuna basar isek, B tamamen destroy edilir ve A'nın sadece view'ı yeniden oluşur. (Kendisi
+ * hala bellekte tutuluyordu. Sadece view'ı yıkılmıştı.)[onCreateView, onViewCreated, onStart, onResume]
+ *
+ * Eğer ki A'dan B'ye geçerken, A'yı backstack'den silseydik, A'nın sadece view'ı değil komple
+ * kendisi destoroy edilirdi. [Bellekte artık tutulmazdı.]
+ *
+ * Eğer B fragment'ındayken butona basarak A fragment'ına geçiş yapan action'ı kullanırsak, bu durumda
+ * bellekte tutulan eski A fragment'ına geçmeyiz. Yeni bir A fragment'ı bellekte sıfırdan oluşturulur
+ * ve biz o fragment'a geçiş yaparız. Yani backstack'de şu durum vardır: [A(eski), B, A(yeni)]
+ * Eğer ki biz B'den A'ya geçiş yaparken, yeni bir A fragment'ı oluşturup ona geçmek değil de
+ * eski olan A fragment'ına geri dönmek istiyorsak, bu durum da action kullanmayıp tek yapmamız gereken
+ * B'yi backstack'den kaldırmak olur. Bunu da B fragment'ı içinde popBackStack() methoduyla yapabiliriz.
+ */
+
+/**
  * Nasıl Kullanılır?
  * 1. Aşağıdaki kodlar dependencies'e eklenir. (Güncellemeleri kontrol ederek.)
    (Berlirli sürümlerde hata çıkıyor. 2.5.0 sürümünü kullanmayı öneririm.)
@@ -78,7 +100,7 @@ import android.os.Bundle
  * Örnek olarak, bir uygulamanızda ana menü, kullanıcı profili, ayarlar gibi farklı bölümler
  * bulunabilir. Her bir bölüm için ayrı bir navigation graph kullanarak, bu bölümleri bağımsız
  * olarak geliştirebilir ve yönetebilirsiniz. Ayrıca, iç içe geçmiş navigasyon grafiği, gezinme
- * işlemlerini daha iyi organize eder ve sorunları izole eder.
+ * işlemlerini daha iyi organize eder ve daha modüler şekilde programlama yapmamıza olanak sağlar.
  *
  * Detaylı Bilgi İçin:
  * https://egemen-mede.gitbook.io/jetpack-navigation/09.-nested-navigation-graphs
