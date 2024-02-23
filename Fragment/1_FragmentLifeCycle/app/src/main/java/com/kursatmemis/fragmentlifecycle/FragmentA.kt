@@ -20,7 +20,7 @@ class FragmentA : Fragment() {
         Parametre olarak eklendiği context'i alır.
 
         Bu method içinde yapılabilecekler;
-        Fragment, Activity'e bağlandığında activity'nin referansını
+        Parametre olarak aldığı context üzerinden activity'e erişilebilir.
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -64,7 +64,6 @@ class FragmentA : Fragment() {
     /*
         Ekranda gözükecek olan fragment tasarımının belirlendiği method'dur.
         Bu method'un return ettiği view, ekranda gösterilir.
-        View'larla alakalı işlemler bu method'da yapılır.
         Veritabanı gibi işlemleri bu method'da yapmak yerine onCreate'de yapmak daha sağlıklıdır.
         Çünkü bu methodun kullanım amacı UI ile ilgili işlemler yapmaktır. Ayrıca veritabanı
         gibi geç yapılabilen işlemlerin bu method'da yapılması UI'ın gösterimi sırasında vb.
@@ -112,6 +111,8 @@ class FragmentA : Fragment() {
         Fragment'ın kullanıcıyla etkileşimi sonlandığında çağrılan method'dur.
         Bu method'un çalışması için, ya activity duraklatışmış, ya fragment activity'den
         kaldırılmış ya da activity içinde bu fragment yerini başka bir fragment'a bırakmıştır.
+        Kullanıcı ile etkileşime bağlı işlemleri durdurmak ve kaynakları serbest bırakmak için kullanılabilir.
+        Animasyonları durdurmak için vb. kullanılabilir.
      */
     override fun onPause() {
         super.onPause()
@@ -119,6 +120,8 @@ class FragmentA : Fragment() {
     }
 
     // Fragment artık kullanıcıya görünür olmadığı durumda çalışan method'dur.
+    // Kullanıcı ile etkileşime bağlı işlemleri durdurmak ve kaynakları serbest bırakmak için kullanılabilir.
+    // Animasyonları durdurmak için vb. kullanılabilir.
     override fun onStop() {
         super.onStop()
         Log.w("mKm - fragment", "onStop")
@@ -132,18 +135,24 @@ class FragmentA : Fragment() {
     }
 
     // Bu method ile birlikte fragment sonlanma evresine girer.
+    // Burada fragment'ın view'ı ile ilgili referanslar serbest bırakılabilir.
+    // Örneğin viewBinding objesinin null'a atanması gibi.
     override fun onDestroyView() {
         super.onDestroyView()
         Log.w("mKm - fragment", "onDestroyView")
     }
 
     // Fragment için ayrılan son kaynakların temizlenmesi için çağrılır.
+    // Kullanılmayan kaynakları serbest bırakmak veya diğer temizleme işlemlerini gerçekleştirmek
+    // için kullanılabilir.
     override fun onDestroy() {
         super.onDestroy()
         Log.w("mKm - fragment", "onDestroy")
     }
 
     // Fragment bulunduğu activity'den ayrıldığında çağrılır.
+    // Fragment artık aktiviteye bağlı olmadığı için, aktiviteye olan referanslar temizlenir ve
+    // fragmentin bellekten kaldırılması için gereken diğer işlemler yapılabilir.
     override fun onDetach() {
         super.onDetach()
         Log.w("mKm - fragment", "onDetach")
