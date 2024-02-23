@@ -1,0 +1,99 @@
+
+ Memory:
+ - RAM'i ifade eder. Android uygulamalar RAM üzerinde çalışırlar.
+   (Değişkenler vs. run time'da RAM'de saklanıyor.)
+ - Buradaki veriler geçicidir. Uygulama kapandığında kaybolur.
+
+ Memory Cache [Memory'nin üzerinde özel bir alan]:
+ - Uygulama tarafında sıkça erişilen öğeler burada saklanır.
+ - RAM'deki veriye erişime kıyasla RAM'in önbelleğindeki veriye erişmek daha hızlıdır.
+
+ Disk:
+ - Cihazın kalıcı depolama birimidir.
+ - Verileri kalıcı olarak saklar ancak RAM'e erişmeye kıyasla Disk'e erişmek daha maliyetlidir.
+
+ Disk Cache [Disk'in üzerinde özel bir alan]:
+ - Disk'de sıkça erişilen öğeler burada saklanır.
+ - Disk'deki veriye erişime kıyasla Disk'in önbelleğindeki veriye erişmek daha hızlıdır.
+ - Buradaki verilerde otomatik olarak silinebilir.
+
+ Not: Bir resmi RAM/Disk'e kaydetmekle RAM Cache/Disk Cach'e kaydetmek aynı şey değildir. Mesela
+      belleğe kaydetme ve bellekte önbelleğe kaydetme, verinin RAM'e yüklenmesini ifade eder,
+      ancak önbelleğe kaydetme, sıkça kullanılan verilerin daha hızlı erişim için önbelleğe
+      alınmasıyla bir adım daha ileri gider. Disk için de aynı durum geçerli. Disk'e kaydedilen
+      resimleri, Disk'in önbelleğine alarak bu resimlere daha hızlı erişebiliriz.
+
+ Not: Önbelleğe alınan veriler geçicidir. Yani cihazın o andaki durumu, önbelleğin boyutu gibi
+      çeşitli unsurlar neticesinde veriler oradan otomatik olarak silinebilir.
+      Örneğin, belirli bir süre boyunca erişilmeyen veriler otomatik olarak önbellekten
+      silinebilir ve yerlerine yeni veriler gelebilir. Disk'in önbelleğinde ki verilerde otomatik
+      silinebilir.
+
+ Glide:
+ - Glide, Android için bir resim yükleme kütüphanesidir ve Google tarafından önerilmektedir.
+ - Glide; resim, gif ve local video'ları uygulamamıza dahil etmek, memory ve disk cache olaylarını
+   düşünmemize gerek kalmadan hızlı bir şekilde uygulama geliştirmemize olanak sağlayan açık kaynak
+   bir kütüphanedir.
+ - Diğer resim yükleme kütüphanelerine göre daha hızlı ve performanslıdır. Ayrıca daha çok kullanıcı
+   kitlesine sahiptir.
+ - Glide bir caching kütüphanesidir.
+ - Glide hakkındaki belki de en önemli şey; "önbellekleme mekanizması" dır. Glide, resimleri
+   önbelleğe alarak, aynı resimleri tekrar tekrar internetten yüklemek yerine yerel önbellekten alır.
+   Bu, internet bağlantısının olmadığı durumlarda bile resimlerin hızlı bir şekilde önbellekten
+   alınarak gösterilmesini sağlar.
+ - Glide, resimleri önbelleğe alarak ilk yükleme süresini önemli ölçüde kısaltır. Resimler bir kez
+   önbelleğe alındıktan sonra, uygulama onları tekrar önbellekten alarak hızlı bir şekilde
+   kullanabilir. Bu sayede internet bağlantısı olmasa bile önbelleğe alınan resimler tekrar tekrar
+   kullanılabilir.
+ - Glide ile indirilip Disk Cach'e kaydedilmiş resimler belirli bir boyuta ulaştığında bellekten
+   silinirler. Yani bu resimler için sınırsız bir alan tahsis edilmiyor. Diyelim ki 250 MB'lık
+   bir alan tahsis edilmiş olsun. 250 MB'lık alanın tamamı da Glide tarafından indirilmiş resimler
+   tarafından kullanılıyor olsun. Bundan sonra internetten yeni bir resim indirildiğinde, önbellekte
+   kaydedilen eski resimlerden hangisi önbelleğe ilk önce kaydedilmişse bu resimbellekten silinir.
+   Ve bunun boşalttığı alana yeni indirilen resim kaydedilir.
+   (İlk indirilen silinir diye kesin kural yok. Bazen en az kullanılan resim bellekten silinir.
+   Bu, Glide'ın politikalarına bağlıdır.)
+   Not: Bazen de disk/memory önbelleğinde ki veriler çeşitli sebeplerden ötürü silinebilirler.
+        Eğer Glide ile indirilmiş ve önbelleğe kaydedilmiş veriler silinmiş ise Glide bu resimleri
+        önbellekte bulamaz ve gidip internetten indirmek zorunda kalır.
+ - Glide, resimleri yüklerken ve işlerken arka planda iş parçacıklarını kullanır. Bu, ana uygulama
+   iş parçacığını (UI iş parçacığı) bloke etmeden resimlerin yüklenmesini ve gösterilmesini sağlar,
+   böylece uygulamanın kullanıcı deneyimi akıcı kalır.
+ - Glide, resimleri yüklerken boyutlandırma, kırpma, dairesel dönüşüm, kenar yuvarlama gibi
+   işlemleri kolayca yapabilir. Ayrıca resimlere animasyonlar ekleyebilir.
+
+ Önbellekleme Mekanizması:
+ - Önbellekleme, bir uygulama tarafından kullanılan verilerin geçici olarak saklanması işlemidir.
+   Bu veriler daha sonra tekrar erişim için kullanılır ve tekrar yüklenmesine gerek kalmaz. Bu,
+   uygulamanın performansını artırır çünkü verilerin tekrar yüklenmesi yerine önbellekten alınması
+   daha hızlıdır ve kaynakları daha verimli kullanır.
+
+   How does Glide Cach Work?
+
+   1. Glide, ilk önce istenen resmin Memory Cache'de (RAM Önbelleği) olup olmadığına bakar.
+      Eğer resim Memory'de var ise bu resmi ekranda gösterir.
+   2. Eğer resim Memory Cach'de yok ise Disk Cache'e bakar.
+      Resim eğer burada var ise resmi Memory Cache'e kaydeder. Ardından ekranda resmi gösterir.
+   3. Eğer resim Disk Cache'de de yok ise resmi internetten getirir. Ardından resmi Disk Cache'e
+      kaydeder. Arından resmi Memory Cache'e kaydeder ve ekranda gösterir.
+
+   Glide, cache'leri kontrol ederken aşağıdaki gibi kontrol eder:
+
+   1. Active Resources: Bu resim şu anda başka bir View üzerinde gösteriliyor mu?
+   2. Memory Cache: Bu resim son zamanlarda yüklendi mi ve hala Memory'de mi?
+   3. Resource: Bu resim daha önce işlenip disk önbelleğine yüklenmiş mi?
+      (Resim'e kırpma, boyut değişme, döndürme vb. gibi işlemler yapılıp Disk'e kaydedilmiş mi?)
+   4. Data: Resim verileri Disk önbelleğine kaydedilmiş mi?
+
+   Glide, eğer bu 4 adımda da resmi bulamazsa internete gidip resmi yeniden yükleyecektir.
+
+   Not: Glide, eğer resimler önbellekte bulunuyorsa internetten indirmeyecektir ve önbellekten
+        aldığı resmi ekranda gösterecektir. Eğer resmin önbellekte bulunduğu süreçte, sunucudaki
+        resim değişirse, Glide önbellekteki resmi getireceğinden dolayı güncel olmayan eski resmi
+        ekranda gösterecektir. Ancak developer olarak bizler, Glide'ın bize sunmuş olduğu signature()
+        methodunu kullanarak, sunucudaki resim değiştiğinde resmin önbellekten alınması yerine
+        tekrar internetten indirilmesini sağlayabiliriz. Veya yine Glide'ın bize sunduğu
+        diskCacheStrategy() methodunu kullanarak resimlerin hiçbir zaman önbelleğe kaydedilmemesini
+        ve her zaman internetten alınmasını sağlayabiliriz.
+        Bu ve bunun gibi cachleme mekanızmasını Glide'a bizim istediğimiz gibi yaptırmak için
+        resmi dökümantasyonlara vb. bakmak gerekir.
