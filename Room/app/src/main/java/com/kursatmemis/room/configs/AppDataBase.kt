@@ -43,10 +43,10 @@ abstract class AppDataBase : RoomDatabase() {
      * bu değişkenin değerinin değiştiğini anında fark edemeyebiliyor.
      * [Çünkü her thread kendi önbelleğinde bu değişkenin kopyasıyla çalışıyor.]
      * Ama bu annotation ile işaretlenmiş bir değişkenin değeri bir thread üzerinde değişitirilirse,
-     * diğer thread'ler de anında bu değişikliğin farkında olacaktır. Bu sayede eğer ki bizim
+     * diğer thread'ler de anında bu değişikliğin farkında olacaktır. Diyelim ki bizim
      * uygulamamızda 'instance' objesini, yani veritabanı objesini aynı anda kullanan A ve B
      * thread'leri var ve bu 'instance' objesinin ilk başta değeri null olsun. Eğer A thread'inde
-     * bu objeye bir değer atanırsa, B thread'i bu değişikliği anında fark eder ve artık bunu bu
+     * bu objeye bir değer atanırsa, B thread'i bu değişikliği anında fark eder ve artık bu
      * objeyi null olarak değil, değeri atanmış halde kullanır. Bu sayede, B thread'i gidip tekrar
      * bu objeyi yeniden oluşturmaz ve dolayısıyla bellekte birden fazla veritabanı objesinin
      * aynı anda olmaması sağlanır.
