@@ -5,7 +5,20 @@ import android.os.Bundle
 import android.util.Log
 import androidx.room.Room
 import com.kursatmemis.room.configs.AppDataBase
+import com.kursatmemis.room.dao.StudentDao
 import com.kursatmemis.room.models.Student
+
+/**
+ * Üç Katmandan Oluşur:
+ * 1. Entity: DB'deki tabloları temsil eden DataClass. Room, her entity için bir tablo oluşturur ve
+ *    sınıfta bulunan alanlar tablodaki sütunlara karşılık gelir.
+ *
+ * 2. Dao: Veritabanı için belirttiğiz SQL sorgularını içeren bir interface'dir.
+ *
+ * 3. Database: Veritabanının oluşmasını sağlayan ana bileşendir. Bu abstract class sayesinde
+ *    Dao'ya erişerek veritabanı üzerinde yapılması istediğimiz sorguları/işlemleri temsil eden
+ *    methodlara erişebiliyoruz.
+ */
 
 /**
  * Nasıl Kullanılır?
@@ -45,8 +58,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = Room.databaseBuilder(this, AppDataBase::class.java, "AppDataBase")
-            .build()
+        val db = AppDataBase.getInstance(this)
 
         val run = Runnable {
             db.studentDao().deleteAllStudents()

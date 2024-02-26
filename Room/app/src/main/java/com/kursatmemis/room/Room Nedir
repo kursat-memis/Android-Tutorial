@@ -1,5 +1,11 @@
+Jetpack Nedir?
+- Geliştiricilerin yüksek kaliteli uygulamaları daha kolay yazmasına yardımcı
+olmak için bir kütüphane, araç ve kılavuz paketidir. [Google böyle tanımlar.]
+
 Room Nedir?
-- SQLite veritabanıyla çalışmayı kolaylaştıran bir database library'dir.
+- Jetpack öğesidir.
+- SQLite veritabanıyla çalışmayı kolaylaştıran bir database library'dir. Database oluşturup onu
+  yönetmemizi sağlar.
 - Local olarak veri depolanmasını sağlar. Yani veriler, cihazın içerisinde tutulur.
 
 Neden Room Kullanalım?
@@ -10,7 +16,12 @@ Neden Room Kullanalım?
  2. Derleme Zamanı Hataları: Compiler Time'da SQL sorgularını doğrulayarak Run Time'da hata çıkarak
  uygulamanın crash olma olasılığını azaltır.
 
- 3. ORM (Object-Relational Mapping): Room, SQLite veritabanıyla nesne tabanlı programlama arasında
+ 3. ORM (Object-Relational Mapping): ORM, Nesne Yönelimli Programlama ve İlişkisel Veritabanları
+ arasındaki ilişkiyi yönetmek için kullanılan bir programlama tekniğidir. ORM, bu iki dünya arasında
+ bir köprü oluşturarak Kotlin objelerini veritabanındaki tablolar ile ilişkilendirir ve veritabanı
+ işlemlerini nesneler üzerinden gerçekleştirmeyi sağlar.
+
+ Room, SQLite veritabanıyla nesne tabanlı programlama arasında
  bir köprü görevi görür. ORM, veritabanı tablolarını ve sorgularını, programlama dillerindeki
  nesnelerle ilişkilendirerek veritabanı işlemlerini daha basit ve anlaşılır hale getirir.
  Mesala bir sınıfın başına @Entity(tableName = "student") annotation'ınını eklersek artık o sınıf
