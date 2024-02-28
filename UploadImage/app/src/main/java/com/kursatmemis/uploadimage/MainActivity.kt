@@ -30,7 +30,7 @@ import java.io.ByteArrayOutputStream
  * uygulama bu işlevlere erişemez. Manifest dosyasında izin vermek için <uses-permission> tagleri
  * kullanılır.
  *
- * İki türlü izin var:
+ * En Çok Kullandığımız İki türlü izin var:
  * 1. Normal Permission: Kullanıcıya açıkca bir uyarı göstermeye gerek kalmadan Manifest.xml'de
  *    tanımlamak yeterlidir. (İnternet izni)
  *
@@ -55,6 +55,19 @@ import java.io.ByteArrayOutputStream
  * eklendi.
  */
 
+/**
+ *   Bitmap Nedir:
+ * - Resmin temsil edilmesi için kullanılan bir sınıf.
+ * - Pikselleri matris olarak saklar ve renklerini tanımlar.
+ * - Resimleri görsel işleme tabi tutmak(kırpmak, efekt vermek, döndürmek) için kullanılır.
+ * - Özetler resim gibi görüntüleri işlemek için kullandığımız bir sınıf.
+ *
+ *   ByteArray:
+ * - Byte türünden oluşan bir dizidir.
+ * - Genellikle resim, ses vb. veri türlerini depolamak için kullanılır. Özellikle local db'lerde depolamak için.
+ * - Ek olarak verileri şifrelemek için de kullanılabilir.
+ */
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
@@ -70,7 +83,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun selectImage() {
-
         /**
          * Sürümü 33'den büyük olan ve küçük olan cihazlarda resim seçme işlemini gerçekleştirecek
          * kodlardaki tek fark;
@@ -80,7 +92,6 @@ class MainActivity : AppCompatActivity() {
          *
          * Geri kalan tüm kodlar aynıdır.
          */
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // Sürümü 33'den büyük olan cihazlarda resim seç.
             selectImageOnDevicesWithVersionGreaterThan33()
@@ -320,7 +331,6 @@ class MainActivity : AppCompatActivity() {
         return Bitmap.createScaledBitmap(image,width,height,true)
 
     }
-
 
     /**
      * SQLite gibi veritabanlarına resim kaydedeceğimiz zaman bu resmi 'PNG-JPEG vb.' formatında
