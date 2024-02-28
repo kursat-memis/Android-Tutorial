@@ -50,6 +50,10 @@ abstract class AppDataBase : RoomDatabase() {
      * objeyi null olarak değil, değeri atanmış halde kullanır. Bu sayede, B thread'i gidip tekrar
      * bu objeyi yeniden oluşturmaz ve dolayısıyla bellekte birden fazla veritabanı objesinin
      * aynı anda olmaması sağlanır.
+     *
+     * NOT: Eğer Hilt ile Singleton düzeyinde AppDataBase objesi provide ediyor isek; @Volatile
+     * ve synchronized() kullanmaya gerek yoktur. Çünkü Hilt, Singleton pattern'ini sağlamak için
+     * zaten Valotile annotation'ı ve synchronized() methodunun yaptığı işi kendisi otomatik yapacaktır.
      */
 
     companion object {
