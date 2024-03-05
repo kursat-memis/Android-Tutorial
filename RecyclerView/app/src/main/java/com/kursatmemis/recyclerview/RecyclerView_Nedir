@@ -1,0 +1,60 @@
+
+ RecyclerView:
+ - ListView ve GridView'ın performans ve diğer faydaları bakımından daha iyi bir versiyonudur.
+ - ListView ve GridView'da sunulmayan birçok özellik, RecyclerView'da sunulmaktadır.
+   Örn: LayoutManager, Animasyon vb.
+ - Ekrandan çıkan View'ların yeniden kullanımını sağlayarak performansı yükseltir.
+ - RecyclerView'ı kullanmak için Adapter ve LayoutManager instance'larının başlatılması ve
+   recyclerView'a set edilmesi gerekir.
+
+ LayoutManager:
+ - RecyclerView'da tanıtılan yeni bir konseptir.
+ - RecyclerView'ın kullanacağı Layout tipini belirtir.
+ - Biz RecyclerView.LayoutManager class'ını extend ederek custom bir LayoutManager yazabiliriz
+   ancak RecyclerView built-in olarak bize 3 adet LayoutManager objesi sunmaktadır:
+   1. LinearLayoutManager: Yatay veya dikey olarak kaydırılabilir bir liste görünümü sağlar.
+   2. GridLayoutManager: Grid(Izgara) formatta bir görünüm sağlar. (Telefondaki galeri)
+   3. StaggeredGridLayoutManager: Grid formatında görünüm sağlar. GridLayoutManager'dan farkı;
+      item'ların boyutlarının gelişi güzel rastgele olarak belirlenmesidir.
+
+   Not: Eğer liste içindeki item'ların boyutları sabit değilse ve dinamik olarak değişebiliyorsa
+        StaggeredGrid kullanmak, Grid kullanmaktan daha iyidir. Çünkü StaggeredGrid, item'ları
+        uzunluklarına göre otomatik olarak boyutlandıracaktır.
+        [Mesela kullanıcının girdiği text'e göre item'larımız olacaksa ve kullanıcının ne kadar
+        uzunlukta bir text gireceğini bilmiyorsak StaggeredGrid kullanarak kullanıcının girdiği
+        uzunluğa göre item'ın boyutunun otomatik ayarlanmasını sağlayabiliriz.]
+
+   LinearLayoutManager(Context context, int orientation, boolean reverseLayout):
+   In this first parameter is used to set the current context, second is used to set the
+   Layout Orientation should be vertical or horizontal. By using this constructor we can easily
+   make a horizontal or vertical list. The third parameter is a boolean, when set true,
+   items are shown in reverse order.
+   [Eğer item'ların ters sırayla sıralanmasını istiyorsak 3. parametreye true geçeriz.]
+
+   GridLayoutManager (Context context, int span count, int orientation, boolean reverse layout):
+   In this constructor, the first parameter is used to set the current context,
+   the second parameter is used to set the span count means the number of columns in the grid,
+   the third parameter is used to set the Layout Orientation which should be vertical or horizontal
+   and the last param is a boolean when set true, items are shown in reverse order.
+
+   StaggeredGridLayoutManager(int span count, int orientation):
+   It is used to create a StaggeredGridLayoutManager with 2 params. The first parameter is used to
+   set spanCount means number of columns if orientation is vertical or rows if orientation is
+   horizontal, the second parameter is used to set the orientation, it should be vertical or
+   horizontal.
+
+   Item Animator:
+   Item Animator, RecyclerView'deki öğeler arasındaki geçişleri animasyonlarla yöneten bir
+   bileşendir. Örneğin, bir öğe eklendiğinde veya silindiğinde, öğeler arasındaki geçişlerin
+   animasyonlarla görsel olarak düzgün bir şekilde gerçekleşmesini sağlar.
+   Bu, kullanıcı deneyimini geliştirir ve kullanıcıya hangi öğelerin eklendiği, silindiği veya
+   güncellendiği hakkında daha net bir geribildirim sağlar.
+
+   Item Decorator:
+   Item Decorator, RecyclerView'deki her öğenin etrafına divider, çizim, boşluk veya kenarlık gibi
+   görsel öğeler eklemek için kullanılan bir araçtır. Bu, öğelerin arasına ayırıcı çizgiler eklemek,
+   her öğenin etrafına bir kenarlık çizmek veya her öğeye farklı bir arka plan rengi uygulamak gibi
+   işlevler için kullanılabilir.
+
+
+
