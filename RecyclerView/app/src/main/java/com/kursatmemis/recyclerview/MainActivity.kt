@@ -90,9 +90,18 @@ import com.kursatmemis.recyclerview.databinding.ActivityMainBinding
  *
  * ViewHolder class'ı içinde item'ın position bilgisini almak:
  * Bunun için kullanabileceğimiz iki property var:
- * 1. adapterPosition:
+ * 1. adapterPosition: Adapter'daki sıraya göre position'ı verir.
  *
- * 2. layoutPosition:
+ * 2. layoutPosition: Ekranda gördüğümüz view sırasına göre position'ı verir.
+ *
+ * Not: adapterPosition ve layoutPositon birçok durumda aynı değeri verir. Ancak ekrandaki view
+ * sırasıyla adapter'daki sıra aynı olmadığı zamanlar bu property değer aynı değeri vermez. Örneğin
+ * biz adapter'a bir veri eklediğimiz ve notify* methodunu çağırdığımız zaman, adapterPosition
+ * değeri anında güncellenecektir. Ancak layoutPosition değeri yaklaşık 16ms. sonra güncellenecektir.
+ * Bunun sebebi ise; adapter'a yeni bir öğe eklendiğinde, bu öğe'nin ekranda çizilmesi için yaklaşık
+ * 16 ms. lik bir süre geçmesidir. Haliyle 16 ms. den önce bu öğe çizilemeyeceğinden dolayı ekranda
+ * gösterilemez ve ekrandaki view'ların sırasını gösteren layoutPosition, güncel değeri göstermemiş
+ * olur.
  */
 
 class MainActivity : AppCompatActivity(), MyAdapterWithViewBinding.ItemOnClickListener {
