@@ -1,0 +1,288 @@
+
+ Kaynaklar:
+ 1. Coroutine'i neden kullanmamız gerektiğine dair harika bir yazı:
+ https://kt.academy/article/cc-why#coroutines-on-android--and-other-frontend-platforms-
+ 2. Coroutine hakkında 3 seriden oluşan aşağıdaki yazı:
+ https://medium.com/androiddevelopers/coroutines-on-android-part-i-getting-the-background-3e0e54d20bb
+
+ Coroutine = Co + Routine [Co = Cooperation(İşbirliği), Routine = Function]
+             [Function'ların işbirliği halinde çalışmaları]
+
+ Async: Aynı anda birden fazla task'in yürütülebilmesi. Bir task'in diğer task'i beklemesine
+        gerek olmaması.
+
+ Coroutines:
+ - creating coroutines doesn’t allocate new threads. Instead, they use predefined thread pools and smart scheduling for the purpose of which task to execute next and which tasks later.
+ - Coroutine'ler çok ucuzdur hatta neredeyse bedavadır. Binlerce coroutine oluşturduğumuz durumda
+   bile çok az bir performans kaybı yaşarız. Oysa ki thread'ler pahalıdır ve çok fazla oluşturduğumuz
+   durumda performansı cidden zorlayacaklardır.
+ - Coroutine, concurrent ve async program yazmak için kullanılır.
+ - Coroutine, async kodu callback vs. kullanmadan yazmamızı sağlar. Bundan dolayı hem kodu
+   yazması hem de okuması daha kolay olur.
+ - Coroutine'ler, asenkron kodu basitleştirmek için yeni bir concurrency stili sunar.
+ - Coroutine'ler, thread'lerin yaptığı her şeyi çok daha verimli bir şekilde yapabilirler. Aynı
+   zamanda coroutine'lerle yazdığımız kod daha okunaklı ve kolay olduğu için coroutine kullanmamız
+   tavsiye edilir.
+ - Literatürde 'Light Weight Thread' olarak adlandırılırlar ancak gerçekten thread değillerdir.
+   Thread'lerin içinde yürütülen yapılardır.
+ - Coroutine'ler 'suspendable' dır.
+   Suspendable: Bir task'i yürütebilir, ardından askıya alabilir ve tekrar yürütülmesini devam
+   ettirebiliriz.
+ - Coroutine'ler thread'ler arasında da geçiş yapabilir. Bu da yine thread'e karşı üstünlük
+   sağladığı bir avantajlarıdır.
+ - Coroutine'lerin bir thread kümeleri vardır ve ihtiyaç duyduklarında bu kümeden bir thread'i
+   alıp kullanabilirler.
+ - İşlemci üzerinde context switching gerçekleştirmeyecekler ve bu yüzden thread'lere göre daha
+   hızlılar.
+
+ Features of Coroutines:
+ 1. Lightweight: Birçok coroutine'i oluşturabilir ve kullanabiliriz. Thread'ler gibi memory'i
+                 doldurmazlar.
+ 2. Fewer Memory Leak: Coroutine'leri, onların lifecycle'larını ayarlayabileceğimiz scope'ları
+                       kullanarak başlattığımız için memory leak'e sebebiyet vermezler.
+ 3. Jetpack Integration: Birçok Jetpack kütüphanesi Coroutine'lerle uyumlu çalışabilir.
+
+ delay(): Suspending bir functin. Bir coroutine'i belirli bir süre boyunca askıya almak için kullanılır.
+          Suspend olduğu için thread'i bloklamaz.
+
+
+  Hangi Problemi Çözüyorlar?
+  - Android'de, Coroutine'ler, iki probleme harika bir çözüm sunar:
+    1. Long Running Tasks: Main thread'i bloklayabilecek kadar uzun süren görevler.
+    2. Main-Safety:
+
+
+ Dispatchers:
+ * Dispatcher, Coroutine'e görevin hangi thread üzerinde yapılması gerektiğine karar vermede
+   yardımcı olur.
+ * Kullanabileceğimiz 4 Dispatcher vardır ve bu Dispatcher'lardan hangisini seçmemiz gerektiği
+   önemlidir çünkü her biri belirli kullanım durumlarına bağlı olarak optimize edilmiş farklı thread
+   pool'lara sahiptir. Bundan dolayı en iyi performansı almak için en uygun Dispatcher'ı seçmeliyiz.
+ * Dispatcher Tipleri:
+   1. Dispatchers.Default: CPU-Intensive (CPU-Yoğun) işlemler için kullanılır.
+      Örnek:
+      - Memory'de bulunan büyük listeler üzerinde sıralama, filtreleme, arama vs. yapmak.
+      - Memory'de bulunan bir Bitmap üzerinde yapılan filtreleme, ölçeklendirme, kırpma vb. işlemler.
+        (Diskten Bitmap'i okuyarak değil! Memory'de bulunan Bipmap üzerinde!!!)
+      - Memory'de bulunan JSON dosyasını pars etme.
+        (Diskte bulunan JSON dosyasını okuyarak değil! Memory'de bulunan JSON!!!)
+
+   2. Dispatchers.IO: Disk veya internet üzerinde gerçekleşen input-output işlemleri için kullanılır.
+      Örnek:
+      - Network calls
+      - Making a database query
+      - Downloading a file from the server.
+      - Reading from a file or writing to a file.
+
+   3. Dispatchers.Main: Main thread üzerinde yapılmasını istediğimiz işlemler için kullanılır.
+      Örnek:
+      - UI güncellemeleri
+      - Bellekte bulunan küçük listeler üzerinde filtreleme, arama vs. yapmak.
+
+   4. Dispatchers.Unconfined: Coroutine'in hangi thread üzerinde çalışacağını önemsemediğimiz
+      durumlarda kullanılır. Bu Dispatcher kullanılarak oluşturulan bir coroutine'nin hangi thread
+      üzerinde çalışacağı kesin olarak belli değildir. Mesela bu dispatcher'ı kullanan bir coroutine
+      hangi thread üzerinde başlatıldıysa YÜKSEK İHTİMAL o thread o thread üzerinde çalışır.
+      Eğer bu coroutine suspend edilir ve sonrasında tekrar çalıştırılmaya başlarsa,  ya daha önce
+      çalıştığı yerde ya da onu devam ettirmeye musait olan başka herhangi bir thread üzerinde
+      çalışır.
+
+   Not: Dispatchers.Unconfined, genellikle projelerde kullanılmaz.
+
+   Not: Aslında dispatcher seçerken burada tanımlandığı durumların dışına çıkarakta seçim
+   yapabilirsin. Mesela bir network çağrısını Dispatchers.Default'da gerçekleştirebilirsin. Program
+   yine de sorunsuz çalışacaktır. Ancak bu dispatcher CPU-Intensive işlemler için optimize edildiği
+   bu dispatcher'ı kullanmak yerine Dispatcher.IO'yu kullanmak daha iyi bir performans almamızı
+   sağlar.
+
+ Suspension:
+  * Coroutine'ler, suspend ve resume edilebilen yapılardır. Oysa ki thread'ler suspend edilemezler,
+    sadece bloklanabilirler. Thread'ler bloklandıkları zaman hala canlıdırlar, kaynakları tüketirler
+    ve işletim sistemi tarafından yönetilmeye devam ederler. Oysa ki bir Coroutine suspend
+    edildiğinde, Coroutine'in içindeki local değişkenler ve Coroutine'in nerede suspend edildiği
+    gibi Coroutine'nin durumu hakkında bilgi içeren bir nesne bellekte tutulur
+    (coroutine resume edileceği zaman bu nesne kullanılacak) ve bu süreçte CPU'da
+    bir işlem yapılmaz, kaynaklar da tüketilmez. İşte bundan dolayı Thread'in bloklanmasına nazaran
+    Coroutine'nin suspend edilmesi daha az maliyetli bir işlemdir. Ayrıca Coroutine'ler, işletim
+    sistemi tarafından değil, Coroutine library tarafından yönetilir.
+
+    Suspend Function:
+    - 'suspend' keyword'ü ile işaretlenen function'lara denir.
+    - Suspend function'lar bir coroutine değillerdir ve bir coroutine başlatmak için de
+    kullanılmazlar. Coroutine'i suspend edebilmek için kullanılırlar.
+    - Coroutine'i suspend edebilen function'lardır. Bu yüzden bu functionlar bir Coroutine içinden
+    çağrılırlar. (Çünkü suspend etmeleri için bir coroutine'i ihtiyaçları var.) Ya da başka bir
+    suspend function üzerinden çağrılırlar. Ek olarak suspend functionlar içinde normal function
+    çağrısında da bulunabiliriz.
+    - Suspend function'ı coroutine içinde çağırdığımız da kesin olarak bu coroutine suspend edilecek
+    diye bir şey yoktur. Eğer ki suspend function içinde, coroutine'i suspend edecek başka bir method
+    (network call, database call, delay() etc.) bu suspend function, coroutine'i suspend etmez.
+    Zaten böyle bir durumda editor 'suspend' keywordünün de üstünü gri gösterecektir. Yani
+    coroutine'in suspend edilmesini sağlayan asıl şey suspend function'ın kendisi değil, suspend
+    function'ın içinde çağrılan başka bir suspendable işlemdir.
+    - Coroutine'i direkt olarak suspend edebilen function'lar da mevcuttur. Bunlar;
+    Coroutine library'den gelen, suspendCoroutine() ve suspendCancellableCoroutine() functionlarıdır.
+    Ancak genelde projelerimizde bu methodları kullanmayız. Bunların yerine dolaylı olarak Coroutine'i
+    suspend eden 'withContext()', 'delay()', 'job.join()', ve 'Deferred.await()' methodlarını
+    kullanırız.
+
+    Suspend Function'lar Decompile Edildiğinde Ne Oluyor?
+    * Eğer ki kodumuzu decompile edersek Suspend function'ların suspend keyword'üne sahip olmadığı
+    ve 'Continuation' adında bir parametre alan bir function olarak tanımlandığını görürüz.
+    Bu 'Continuation' parametresi, suspend function'ın hangi satırda duraklatıldığını ve resume
+    edileceği zaman hangi context'de tekrar çalışacağı gibi bilgiler saklar.
+
+    Genel olarak işlevleri şunlardır:
+    1. Durum Saklama: Continuation objesi, suspend fonksiyonun hangi noktada duraklatıldığını saklar.
+    Bu sayede, fonksiyon tekrar başlatıldığında, iş kaldığı yerden devam edebilir.
+    (Kısaca fonksiyon kaçıncı satırda duraklatıldı)
+
+    2. Context Saklama: Continuation objesi, suspend fonksiyonun hangi bağlamda çalıştırıldığını da
+    saklar. Bu bağlam, örneğin coroutinenin scope'unu veya thread'in kimliğini içerebilir.
+
+    3. Devam Ettirme: Continuation objesi, suspend fonksiyonun tekrar başlatılmasını sağlar.
+    Bunu yapmak için resume veya resumeWithException fonksiyonları kullanılır.
+
+    4. Sonuç Alma: Continuation objesi, suspend fonksiyonun sonucunu da saklar. Bu sonuca, await
+    veya awaitOrNull fonksiyonları aracılığıyla erişilebilir.
+
+ Coroutine Scopes:
+ Coroutine Scope'lar çok önemlidir çünkü Coroutine'lerin kullanıldığı Activity-Fragment-ViewModel
+ yapıları destroy edildiğinde Coroutine'lerin de arka planda gerçekleştirdikleri görevleri
+ iptal etmemiz gerekir.
+
+ lifecycleScope:
+ Activity - Fragment'lar destroy edildiğinde, Coroutine'lerin de destroy edilmesini
+ istiyorsak bu scope'u kullanırız. Bu sayede Activity - Fragment destroy edildiğinde
+ eğer Coroutine hala çalışmaya devam ediyorsa otomatik olarak iptal edilecektir.
+
+ viewModelScope:
+ ViewModel'ımız destroy edildiğinde, Coroutine'lerin de destroy edilmesini istiyorsak bu scope'u
+ kullanırız. Bu sayede ViewModel destroy edildiğinde, eğer Coroutine çalışmaya devam ediyorsa
+ otomatik olarak iptal edilecektir.
+ 
+ Coroutine Scope: 
+ Kendi özel scope'umuzu oluşturmamızı sağlar.
+ 
+ Global Scope: 
+ Uygulama hayatta olduğu sürece global scope'da hayatta oluyor.
+ 
+ Job:
+ - Bir Coroutine'i handle etmemizi sağlayan bir objedir.
+ - 'launch' ile bir Coroutine'i başlattığımızda 'Job' objesi elde ederiz.
+ - 'async' ile bir Coroutine'i başlattığımızda 'Deferred<T>' objesi elde ederiz ve bu da 'Job'
+ interface'ini extend eden başka bir interface'dir. Yani 'Deferred' objesi de bir Job objesidir.
+
+ Not: CoroutineStart.LAZY parametresiyle başlatılan coroutine builder'ların geriye return ettikleri
+ job direkt olarak çalışmaya başlamaz. Job üzerinden start() veya join() methodunun çağrılmasıyla
+ birlikte çalışmaya başlarlar.
+
+ Lifecycle of A Job: Job objelerinin lifecycle'ı job'ın oluşturulmasıyla başlar ve iptal edilene
+ ya da tamamlanana kadar devam eder.
+
+  Start: Job çalışmaya başlar.
+  Active: Job'ın aktif olduğu durumdur.
+  Completed: Job'ın tamamlandığı durumdur.
+  Canceled: Job'ın iptal edildiği durumdur.
+
+  -> Bir job, Coroutine çalıştığı sürece ya da Coroutine'de bir hata çıkana kadar ya da Coroutine
+     iptal edilene kadar 'Active' durumdadır.
+  -> Job, cancel() methodu kullanılarak istenilen zamanda cancel edilebilir. cancel() methodu,
+     Job'ın 'Cancelled' durumuna geçmesine sebep olur.
+  -> Coroutine'in içindeki görevler tamamlandığında, Coroutine 'Completing' duruma geçer. Eğer
+     Job'ın içinde başka child Job'lar varsa, 'Completed' durumuna geçmez ve bunlar tamamlanana
+     kadar 'Completing' durumunda kalır. Job'ın içindeki child Job'lar da tamamlanana kadar, Job
+     hala 'Active' durumdadır.
+
+                                     JOB STATES TABLE
+           States                       isActive        isCompleted         isCancelled
+  New(optional initial state)            false             false              false
+  Active(default initial state)          true              false              false
+  Completing(transient state)            true              false              false
+  Cancelling(transient state)            false             false              true
+  Cancelled(final state)                 false             true               true
+  Completed(final state)                 false             true               false
+
+   isActive: Job, aktif olduğu sürece true return eder. Start edilen ve not completed(tamamlanmayan)
+             veya not cancelled(iptal edilmemiş) olan Job'lar aktiftir. Alt Job'ların tamamlanmasını
+             bekleyen Job'lar, iptal edilmediği ve failure olmadıkları sürece aktif olarak beklerler.
+
+   isCompleted: Job, herhangi bir nedenden ötürü tamamlandığında true return eder. Cancel edilen,
+                failure olan veya içindeki görevi gerçekleştiren job'lar, completed(tamamlanmış)
+                sayılır.
+
+   isCancelled: Job, herhangi bir nedenden ötürü cancel edildiğinde true return eder. Job, failure
+                olduğunda, Job'ın bir child'ı cancel edildiğinde, Job'ın kendisi cancel edildiğinde
+                veya Job'ın parent'ı cancel edildiğinde Job'da cancel edilmiş sayılır.
+                Not: Job, iptal edilse bile yapmakta olduğu işi devam ettirebilir!!!
+
+  Job Hiyerarşisi:
+  - Job'ların bir hiyerarşisi vardır ve bu yüzden Job'lar, diğer Job'ların içerisinde yaşayabilir.
+  - Bir Job, başka bir Job'ı kapsıyor ise, dıştaki Job 'parent', içteki Job ise 'child' olarak
+    adlandırılır.
+  - Parent Job cancel edilirse, onun içinde ki tüm Job'lar da cancel edilecektir.
+  - Bir Job, 'CancellationException' haricinde başka bir Exception ile failure olursa, bu Job'ın
+    parent Job'ı cancel edilir ve bunun sonucunda da tüm child Job'lar cancel edilir. Bu davranış,
+    'SupervisorJob' kullanılarak customize edilebilir.
+
+  Types of Jobs:
+  1. Job: 'launch' ile başlatılan bir coroutine geriye 'Job' türünden bir obje döner. Bu job objesi
+  üzerinden o coroutine'in lifecycle'ını kontrol edebiliriz. (Starting, Waiting, Cancelling etc.)
+
+  2. Deferred<T>: 'async' ile başlatılan bir coroutine geriye 'Deferred' tipinden bir obje döner.
+  Bu 'Deferred' interface'i, 'Job' interface'ini extend eden bir interface'dir. Bundan dolayı,
+  'Deferred' de bir Job türüdür. Burada ki 'T' parametresi, Coroutine içinde return edilecek sonucun
+  tipini temsil eder.
+
+  3. SupervisiorJob: Child coroutine'ler için kullanılan bir parent Job'dır. Normal Job'lardan
+  farklı olarak, bir child coroutine'nin başarısız olması veya iptal edilmesi, parent job ve diğer
+  child job'lara etki etmez.
+
+  4. CompletableJob: Bu Job'ın tamamlanması için programcının complete() methodunu çağırması gerekir.
+  Aksi halde Job objesi tamamlanmaz.
+
+
+ - Job objeleri üzerinden çağırabileceğimiz methodlar:
+ 1. isActive(): Job, başlatılıdıysa ve tamamlanmadı veya iptal edilmediyse true return eder.
+ Job içinde başka child job'ların olduğu durumda ana job işini tamamlasa bile, alt job'lar
+ tamamlanana kadar ana job'da aktif kabul edilir ve bu method yine true return eder.
+
+ 2. isCompleted(): Job iptal edilmiş, başarısız olmuş veya başarıyla işini tamamladıysa bu method
+ true return eder. Eğer job içinde başka job'lar da varsa bu child job'lar tamamlanana kadar bu
+ method true return etmez.
+
+ 3. isCancel():
+
+ 1. cancel():
+ Coroutine'in görevini tamamlanmasını beklemeden o coroutine'i iptal eder.
+ Ancak bu method kullanılırken dikkat edilmesi gereken önemli bir husus var! Biz cancel() methodunu
+ çağırır çağırmaz Coroutine her zaman anında iptal edilmeyebiliyor. Bunun sebebi; Coroutine,
+ içinde tanımlanan görevi tamamlarken o kadar meşgul oluyor ki iptal edildiğinden haberi
+ olmayabiliyor. Bu sorunun üstesinden gelmek için Coroutine'in içinde if(isActive) koşulunu
+ kontrol ederiz. 'isActive' değeri, Coroutine'in iptal edilip edilmediği bilgisini bize return eder.
+ Bu sayede eğer Coroutine aktif ise işlemleri yapmasını, eğer değilse yapmamasını sağlayabiliriz.
+
+ 2. join():
+ Suspend bir function'dır. Bu yüzden ya bir coroutine içinden ya da başka bir suspend function
+ üzerinden çağrılabilir.
+ Bu method, Coroutine işini tamamlayana Coroutine'i suspend eder. Coroutine içinde bu methodun
+ üstünde yazan kodlar çalışmalarını tamamlayana kadar join() methodundan sonraki satırlar
+ işlenmeyecektir.
+
+ 3. start(): Job'ın temsil ettiği Coroutine'i başlatır. Eğer bu coroutine zaten çalışıyorsa veya
+ tamamlanmışsa false return eder. Eğer daha önce çalışmıyorsa true return eder.
+
+ 4. join(): Kendinden bir alt satırdaki kodu yürütmeye geçmeden önce Job'ın ilişkili olduğu
+ Coroutine'in çalışmasını bitirmesini bekler.
+
+ 5. cancelAndJoin(): Job'ı iptal eder ve bu iptal işlemi gerçekleşene kadar kendinden sonraki
+ kodların yürütülmesini engeller. Yani hem cancel() hem de join() methodunun birlikte kullanılmasını
+ temsil eder.
+
+ 6. invokeOnCompletion(): Job tamamlandığında veya iptal edildiğinde otomatik olarak çalışan method.
+
+
+
+
+
+
