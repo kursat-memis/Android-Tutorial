@@ -1,7 +1,29 @@
+dp:
+-> Component'ler için kullanılır.
+-> Ekran boyutlarından bağımsız olarak aynı görünümü elde etmek için kullanılır. Bu, farklı ekran boyutlarına ve yoğunluklarına sahip cihazlarda bile bileşenlerin benzer boyutlara sahip olmasını sağlar.
+
+sp:
+-> Text'ler için kullanılır.
+-> Kullanıcının tercih ettiği metin boyutu ölçeğini dikkate alır. Kullanıcı, cihazın ayarlarında metin boyutunu değiştirdiğinde, sp birimleri bu değişikliği otomatik olarak yansıtır. Eğer text ifadelerinin boyutlarını dp ile yazsaydık, kullanıcı telefon ayarlarından metinleri size ayarlarını değiştirdiği durumlarda uygulamadaki metin boyutları değişmeyecekti.
+
+==================================================
+
+padding -> İçsel boşluk.
+margin -> Dışsal boşluk.
+gravity -> Kendi içinde göre konum verir.
+layout_gravity -> Parent'da konum verir.
+baseline -> iki View'ı içindeki metinler aynı hizada olacak şekilde hizalar.
+
+==================================================
+
 LinearLayout:
 -> Eklenen component'lerin vertical(dikey) ya da horizontal(yatay) olarak hizalanmasını sağlar.
 -> Component'lerin verital mı yoksa horizontal olarak mı ekleneceğini belirtmek için "orientation" attribute'unu    kullanırız.
 -> Eğer "orientation" belirtilmez ise default olarak horizontal olarak component'ler hizalanır.
+
+Not: Bu Layout türüne özel olarak component'lere weight atamasında bulunabiliriz. LinearLayout'da weightSum özelliği atar ve child component'ler de layout_weight özelliğini belirterek her birinin ekranda ki ağırlığını oranlayabiliriz. Burada dikkat etmemiz gereken şey; vertical bir tasarım yaparken layout_weight özelliğini yatayda bir etki etmemesi. Aynı şekilde hozirontal bir tasarım yaptığımızda da bu özellik dikeyde bir etki etmez. Son olarak, vertical bir tasarımda weight'lerle çalışırken height'a 0 ver. Horizontal olarak weight'lerle çalışırken width'a 0 ver ki bu sayede daha tutarlı bir çizim yapılabilsin. Aksi taktirde ağırlığa göre mi yoksa width-height değerine mi göre çizim yapacağı tam olarak net olmadığından dolayı istediğimiz sonuçları elde edemeyebiliriz.
+
+==================================================
 
 RelativeLayout:
 -> Göreceli(ilişkisel) bir konumlandırma sağlar.
@@ -9,9 +31,18 @@ RelativeLayout:
 -> Component'leri birbirlerine göre konumlandırdığımız için her birine id vermeyi unutmamalıyız. Çünkü bu id'leri kullanarak component'leri birbirlerine göre hizalıyoruz.
 -> Android 3.3 ile birlikte, RelativeLayout'da bir component'e yatayda ve dikeyde bağlantı verdikten sonra o component'i sürükle-bırak mantığıyla hareket ettirebiliriz.
 
+==================================================
+
 ConstraintLayout:
 -> Daha esnek bir şekilde tasarım yapmamıza olanak sağlayan ve 2016'da hayatımıza girmiş olan Layout çeşitidir.
--> Diğerlerine göre daha iyi bir performansla çalışır.
+-> Complext tasarımlarda diğerlerine göre daha iyi bir performansla çalışır. Çünkü diğerlerini kullanarak karmaşık bir tasarım yaptığımızda çok fazla iç içe geçmiş view olur. İç içe geçmiş view'ların çizimi ise performanstan kayıptır. Oysa
+ConstraintLayout, diğerlerine göre daha az iç içe geçmiş bir yapı ile tasarımımızı yapmamızı sağlar.
+
+Not: Constraint Layout'da blueprint penceresi bulunmakta. Bunu istersek kapatabiliriz.Öyle çok büyük bir avantajı yok. Sadece view'ların sınırlarını daha net bir şekilde görmemizi sağlıyor. Mesela imageview'ın sınırları daha net görmemize faydalı olabilir. Veya invisible olan view'lar preview'da gözükmezken blueprint'de gözükür. Ama bunlar dışında öyle çokta büyük bir avantajı yok.
+
+Not: ConstraintLayout içinde width ve height değerinin 0dp olması, o view'in match_constraint özelliğine sahip olduğunu belirtir. Yani, bu view'in kendisine bağlı constraint'lere göre genişliği veya yüksekliği belirlenir.
+
+==================================================
 
 FrameLayout:
 -> View'ları üst üste yerleştirmek için kullanılır.
@@ -19,41 +50,37 @@ FrameLayout:
 -> İkinci eklenen view, ilk eklenen view'ın üstünde gözükür.
 -> Genellikle resmin üzerinde yazı göstermek istediğimiz zaman kullanırız.
 -> gravity attribute'unu kullanarak child view'ların pozisyonlarını kontrol edebiliriz.
-- Genel olarak frame layout'da tek bir childview eklenmesi tavsiye edilir. Bunun sebebi birden fazla child view eklendiğinde farklı ekran boyutlarındaki telefonlarda view'ların üst üste binmesi gibi problemlerin ortaya çıkabileceğidir.
+-> Genel olarak frame layout'da tek bir childview eklenmesi tavsiye edilir. Bunun sebebi birden fazla child view eklendiğinde farklı ekran boyutlarındaki telefonlarda view'ların üst üste binmesi gibi problemlerin ortaya çıkabileceğidir.
 
  Neden en çok framelayout for fragments?
 - FrameLayout, tek bir view'ı göstermek için en basit ve kullanımı en kolay ViewGroup'dur. Fragment'ı eklemek ve boyutunu ve konumunu ayarlamak için sadece birkaç satır kod yazmanız yeterlidir.  
 - FrameLayout, diğer ViewGroup'lara kıyasla daha az karmaşık bir yapıya sahiptir. Bu nedenle, fragment'lar arasında geçiş yaparken daha iyi performans sağlayabilir.
 
-Tablelayout: 
+==================================================
+
+TableLayout: 
 -> İçinde bulunan child view'ları satır ve sutunlarla duzenleyerek tablo oluşturmamızı sağlayan bir layout.
 
-gridlayout: diğer layout'lar gibi bir layout çeşiti. bunun diğerlerinden farkı grid şekilde olacak designler yapmamızı sağlar.
+==================================================
 
-gridview: listview'ın grid görünümlü hali. veriler adapter'dan gelir. 
+GridLayout: 
+-> Diğer layout'lar gibi bir layout çeşiti. bunun diğerlerinden farkı grid şekilde olacak designler yapmamızı sağlar.
 
-gridview vs gridlayout: öğeleri statik olacak bir tasarım yapmak için gridview... öğeleri dinamik olacak bir tasarım yapmak için gridlayout...
+Gridview: Listview'ın grid görünümlü hali. Veriler adapter'dan gelir. 
+
+Gridview vs Gridlayout: öğeleri statik olacak bir tasarım yapmak için gridview... öğeleri dinamik olacak bir tasarım yapmak için gridlayout...
+
+==================================================
 
 CoordinatorLayout: Android Design Support Library'nin bir parçasıdır ve özellikle animasyonlu ve etkileşimli kullanıcı arayüzleri için kullanılır. Farklı nesneler arasındaki etkileşimleri yönetmek için kullanışlıdır.
 
-weight sadece linear layoutta mı var?
-weight, horizontal'da veritcal uzunluga etki etmez, veritcal'da horizontal uzunluga etki etmez. ayrıca vertical'da weigth'le calisirken, height'a 0 ver, horizontal'da weight'le calisirken width'a 0 ver ki daha performanslı ve daha tutarlı bir çizim yapsın...
-
-gravity -> kendi içine göre konum verir.
-layout_gravity -> parent'a göre konum verir.
-
-dp: farklı ekranlarda aynı oranları yakalamamızı sağlar.
-sp: cihaz boyutu değişse de sabt kalan boyuttur. text'ler için kullanılır. ekran boyutu arttıkca daha fazla text okunmasını sağlar. 
 
 
-blueprint: öyle büyük bir avantajı yok. sadece view'ların sınırlarını daha net bir şekilde görebiliriz. mesela imageview'ın. ve de invisible olan view preview'da gözükmezken blueprint'de gözükür.
 
- add helpers -> group: view'ları gruba koymamı sağlar. artık bu grup üzerinden tüm view'ları kontrol edebilirim.
 
- baseline: iki view'ın içindeki metinleri aynı hizaya almamızı sağlar.
-width veya height'a 0 dp vermemiz, sadece constraintlayout'da mı match_constranint anlamına geliyor? ve bu arada match_constraint ne demek? bizim verdiğimiz constraint'lerle eşleşsin demek dimi?
-constraint layout ile complex tasarımları yapmak diğer layoutlara göre daha performanslı bir tasarım yapmamızı saglar.
-relative layout'un yaptıgını bu da yapıyor...
+
+
+
 
 
 
