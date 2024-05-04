@@ -1,0 +1,74 @@
+
+ RecyclerView:
+ - RecyclerView, dinamik olarak verileri kaydırılabilir bir şekilde ekranda List, Grid veya
+   StaggeredGrid formatında göstermemizi sağlayan bir bileşendir.
+ - Günümüzde neredeyse her uygulamada bu bileşeni kullanıyoruz. Whatsapp, Telegra, BİP, Instagram
+   Twitter, Galeri, Alarm vb. gibi bir çok uygulamada bu bileşen kullanılmaktadır.
+ - ListView ve GridView'ın daha ileri bir versiyonudur. 'Recycle' yeteneği sayesinde onlardan daha
+   iyi bir performansla çalışır. Ek olarak ListView ve GridView'da sunulmayan 'ItemAnimation' ve
+   'ItemDecorator' özellikleri RecyclerView'da sunulmaktadır.
+
+ Not: RecyclerView'ın itemAnimator özelliğine biz yazmasak bile default olarak DefaultItemAnimator()
+      objesi atanmıştır. Bundan dolayı biz animasyonla ilgili hiçbir kod yazmasak bile
+      RecyclerView, DefaultItemAnimator class'ın da yazılmış olan animasyonları kullanır. Eğer ki
+      custom bir animasyon hazırlamak istersek, bu class'ı extend eden başka bir class yazıp ilgili
+      function'ları override ederek kendi animasyonlarımızı hazırlayabiliriz. Ardından da
+      recyclerView'ın itemAnimator özelliğine kendi yazdığımız class'ın objesini atadığımızda
+      artık kendi animasyonlarımız çalışacaktır.
+
+ Ufak Bilgi:
+ RecyclerView class'ı, ViewGroup class'ını inherit eder ve ScrollingView interface'ini de
+ implement eder.
+
+ Neden RecyclerView?
+ 1. Performans: ListView ve GridView'a göre daha performanslı çalışır. Çünkü öğeleri recycle eder.
+ 2. ViewHolder: ListView'da opsiyonel olarak kullanılırken RecyclerView'da zorunlu.
+ 3. LayoutManager: ListView yalnızca dikey listeyi destekler, GridView ise yalnızca ızgara
+                   görünümünü. Ancak RecyclerView'ın LayoutManager özelliği sayesinde; dikey - yatay
+                   liste, grid görünümlü liste veya staggeredGrid görünümlü listeleri kolayca
+                   oluşturabiliriz.
+ 4. ItemAnimator: ListView ile yapılması zor olan öğe ekleme-çıkarma animasyonları kolayca
+                  yapılabilir. Hatta biz hiçbir şey yazmasak bile RecyclerView default olarak
+                  hazırlamış olduğu animasyonları çalıştırır.
+ 5. ItemDecorator: Bu özellik sayesinde de item'larımıza decore edebiliriz. (Divider ekleme vb.)
+
+ Structure of RecyclerView:
+ - RecyclerView'ı uygulamamıza implement etmek için temel olarak 4 yapıya ihtiyacımız vardır:
+   1. Item Layout: RecyclerView'ın item'larının nasıl görüneceğini tasarladığımız layout dosyası.
+   2. Data Class: RecyclerView'ın item'larında gösterilecek olan data'ları modelleyen data class.
+   3. Adapter: Ana kod. RecyclerView ve data source arasındaki köprü. Data source'daki verileri
+               RecyclerView'ın item'ları üzerinde göstermemizi sağlar.
+   4. ViewHolder: RecyclerView'ın item'larında bulunan view'ları ve/veya direkt item'ın kendisini
+                  temsil eden view'ı store eden bir class. Genellikle Adapter içinde inner bir
+                  class olarak yazılır.
+
+ Layout Manager:
+ - RecyclerView'ın kullanacağı layout tipini belirtir.
+ - RecyclerView.LayoutManager class'ını inherit ederek custom bir LayoutManager hazırlayabiliriz.
+   Ancak RecyclerView built-in olarak bize 3 adet LayoutManager objesi sunmaktadır:
+   1. LinearLayoutManager: Verital ya da horizontal olarak kaydırılabilir bir liste görünümü sağlar.
+   2. GridLayoutManager: Grid(Izgara) formatında bir görünüm sağlar. (Örn: Telefon galerisi)
+   3. StaggeredGridLayoutManager: Grid formatında görünüm sağlar. GridLayoutManager'dan farkı;
+      item'ların boyutlarının gelişi güzel rastgele olarak belirlenmesidir.
+
+   Not: Eğer item'larımızın boyutları sabit değilse ve dinamik olarak değişebiliyorsa
+        StaggeredGridLayoutManager kullanmak, GridLayoutManager kullanmaktan daha iyidir.
+        Çünkü StaggeredGrid, item'ları uzunluklarına göre otomatik olarak boyutlandıracaktır.
+
+        Mesela kullanıcının girdiği text'e göre item'larımız olacaksa ve kullanıcının ne kadar
+        uzunlukta bir text gireceğini bilmiyorsak StaggeredGrid kullanarak kullanıcının girdiği
+        uzunluğa göre item'ın boyutunun otomatik ayarlanmasını sağlayabiliriz.
+
+ Item Animator:
+ Item Animator, RecyclerView'deki öğeler arasındaki geçişleri animasyonlarla yöneten bir
+ bileşendir. Örneğin, bir öğe eklendiğinde veya silindiğinde, öğeler arasındaki geçişlerin
+ animasyonlarla görsel olarak düzgün bir şekilde gerçekleşmesini sağlar. Biz yazmasak bile
+ RecyclerView, DefaultItemAnimator() class'ında tanımlanan animasyonları kullanır. Çünkü
+ default olarak RecyclerView'ın itemAnimator özelliğine bu class'ın objesi atanmıştır.
+ Eğer istersek bu class'ı extend eden başka bir class yazar ve animasyonları özelleştirebiliriz.
+
+ Item Decorator:
+ Item Decorator, RecyclerView'deki her öğenin etrafına divider, çizim, boşluk veya kenarlık gibi
+ görsel öğeler eklemek için kullanılan bir araçtır. Bu, öğelerin arasına ayırıcı çizgiler eklemek,
+ her öğenin etrafına bir kenarlık çizmek veya her öğeye farklı bir arka plan rengi uygulamak gibi
+ işlevler için kullanılabilir.

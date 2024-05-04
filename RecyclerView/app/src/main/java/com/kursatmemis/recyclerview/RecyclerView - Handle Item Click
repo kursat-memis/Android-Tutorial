@@ -1,0 +1,45 @@
+
+ Detaylı Anlatım:
+ https://medium.com/@amsavarthan/the-modern-approach-to-handle-item-click-on-recyclerview-6292cca3178d
+
+ -> Yukarıda konu hakkında detaylı bir anlatım var. Aşağıda da bu anlatımı özetleyen bir döküman
+    yazdım.
+
+ RecyclerView'da item'lara tıklanıldığında ne olacağını ele almak için genel olarak kullanılan
+ 2 yöntem var:
+ 1. Interface Kullanmak
+ 2. Lambda function Kullanmak
+
+ İki yaklaşımda genel olarak kullanılmakta. Ancak lambda function kullanmak, interface kullanmaya
+ nazaran daha temiz bir kod sağlıyor. Bundan dolayı lambda function, biraz daha fazla tercih
+ edilmekte.
+
+ Peki setClickListener atamasını nerede yapacağız? Bunun için de 2 seçeneğimiz var:
+ 1. onBindViewHolder() function'ı içinde
+ 2. ViewHolder class'ının init bloğu içinde
+
+ Burada da tercihimiz ViewHolder class'ının init bloğu içinde setOnClickListener ataması yapmak
+ olmalı. Çünkü bu daha performanslı bir yöntem.
+ Neden?
+ -> onBindViewHolder function'ı ekrana her giren item için çalışır. Bu da ekrana her giren item
+    için setOnClickListener ataması yapmak anlamına gelir.
+ -> Oysa ViewHolder class'ının init bloğu sadece 'recycle' edilmeyip 'inflate' edilerek oluşturulmuş
+    item'lar için çalışır. Yani bizim ekranımızda aynı anda 5 item görünebiliyorsa;
+    "2 + num of visible on the screen + 2" kuralından dolayı sadece 9 kere setOnClickListener
+    ataması yapmış olacağız. Bu da haliyle onBindViewHolder'a göre daha performanslı çalışan bir
+    yapı demek.
+
+ Not: Aslında setOnClickListener ataması, çok maliyetli bir işlem değildir. Bu yüzden bu atamayı
+      onBindViewHolder() function'ı içinde yapmakta çok fazla performansı etkilemeyecektir.
+      Ancak bazı durumlarda item'larımız için çok fazla click listener ataması yapmak durumunda
+      kalabiliriz. Örneğim item'mızda 1 imageView, 2 textView, 4'de button var diyelim. Her biri
+      için hem clickListener hem de longClickListener ataması yapmak istiyoruz. Yani her item için
+      toplamda 14 tane listener atayacağız. Böyle bir durumda onBindViewHolder() function'ı yerine
+      ViewHolder'da listener ataması yapmak gerçektende performansımıza iyi gelecektir...
+
+ Not: Zaten bir item'a tıkladığımızda eleman silme-ekleme gibi işlemleri onBindViewHolder'da
+      set etmek doğru değil. Çünkü yeni bir öğe ekleyip çıkardığımızda onBindViewHolder
+      function'ı otomatik olarak çalışan bir function değil. Bundan dolayı da parametre olarak
+      aldığı 'position' değeri güncellenmeden kalabiliyor. Bunun sonucunda da uygulamamız hatalı bir
+      şekilde çalışabiliyor. Aşağıdaki makalede bu problemden bahsediliyor:
+      https://proandroiddev.com/difference-between-position-getadapterposition-and-getlayoutposition-in-recyclerview-80279a2711d1

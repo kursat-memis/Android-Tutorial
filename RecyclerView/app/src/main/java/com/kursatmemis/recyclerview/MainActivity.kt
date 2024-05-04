@@ -3,146 +3,55 @@ package com.kursatmemis.recyclerview
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.kursatmemis.recyclerview.adapter.AdapterWithViewBinding
+import com.kursatmemis.recyclerview.adapter.BasicAdapter
 import com.kursatmemis.recyclerview.databinding.ActivityMainBinding
-
-/**
- * Structure of RecyclerView:
- * 1. Item Layout: RecyclerView'ın her bir item'ını temsil edecek olan xml dosyası.
- * 2. Data Class: RecyclerView üzerindeki itemlar için bilgi tutan custom modelimiz.
- * 3. Adapter: RecyclerView'ın ana kodudur. Gerekli methodlar bunun içerisinde sağlanır.
- *             En temel tanımıyla adapter; Verileri bir formata sokan ve ekran üzerindeki view'larda
- *             gösterilmesini sağlayan bir yapıdır.
- * 4. ViewHolder: Adapter class'ı içinde tanımladığımız bir inner class. Bu, item layout'daki
- *    view'ların referanslarını tutar. Bu referansları kullanarak programın çalışması sırasında
- *    item'lar üzerinde dinamik olarak görüntülecek verileri belirleriz. Bizi findViewById()
- *    methodunu sürekli olarak çağırmaktan kurtararak daha performanslı bir uygulama yazmamızı
- *    sağlar.
- */
+import com.kursatmemis.recyclerview.factory.StudentListFactory
+import com.kursatmemis.recyclerview.model.Student
 
 /**
  * Nasıl Kullanılır?
+ * 1. RecyclerView'ın gösterilmesini istediğimiz ekran için tasarlanan layout dosyasında
+ *    RecyclerView bileşeni tanımlanır.
  *
- * Not: Eğer ekranda sadece RecyclerView göstereceksek root view'ı Constraint Layout yapmak yerine
- * FrameLayout yapmak bize daha çok pratiklik sağlayacaktır. Ek olarak root view'ı direkt
- * RecyclerView yapmak bazen görüntülenme sorunlarına sebep olabilmektedir.
+ *    Not: Eğer ki ekranımızda sadece RecyclerView göstermek istiyorsak, Layout dosyamızın
+ *    root element'ini FrameLayout yapmamız bize kolaylık sağlayacaktır. Ayrıca, root element'i
+ *    RecyclerView yapmak bazen problemlere yol açabiliyor.
  *
- * Not: RecyclerView'daki item'ların tasarımı için CardView kullanırsak daha hoş bir görüntü
- * elde edebiliriz.
- *
- * Not: RecyclerView, ListView gibi bir item'a dokunulduğunda default olarak bir ripple efect
- * sunmuyor. Bunun gerçekleşmesi için RecyclerView'ın Item'larını temsil eden Layout dosyasına
- * gidip, root element'e aşağıdaki attr.'ler tanımlanmalı:
- *
- *  android:focusable="true"
- *  android:clickable="true"
- *  android:foreground="?android:attr/selectableItemBackground"
- *
- * 1. RecyclerView'ın gösterilmesi istenen Activity/Fragment'ın xml dosyasında recyclerview
- *    tanımlanır.
- * 2. RecyclerView'ın item'larını temsil edecek bir xml dosyası oluşturulur.
- * 3. RecyclerView'ın item'ları üzerindeki bilgileri temsil edecek bir model oluşturmak adına
- *    bir data class oluşturulur.
- * 4. RecyclerView için bir adapter class'ı oluşturulur. [Gerekli açıklamalar MyAdapter'da yapıldı.]
- * 5. RecyclerView'ın layoutManager'ı ve adapter'ı set edilir.
- *
+ * 2. RecyclerView'ın item'larını temsil edecek olan layout dosyası hazırlanır. (item_student)
+ * 3. RecyclerView'ın item'ları üzerinde gösterilecek olan data'ları modelleyecek bir data class
+ *    oluşturulur.  (Student)
+ * 4. Adapter class'ımız yazılır. (BasicAdapter)
+ * 5. Son olarak RecyclerView için adapter ve layoutManager set edilir.
  */
 
-/**
- * Recycle Mantığı:
- * Diyelim ki ekranımız aynı anda sadece 5 item gösterebilecek büyüklükte. Uygulama ilk açıldığında
- * bu 5 item oluşturulur ve ekranda gösterilir. Ardından kullanıcı listeyi scroll yaptığında
- * ekrandan çıkan item, ekrana yeni girecek item olarak kullanılır. Yani yeni bir item oluşturulmaz.
- * Bu da performans'ın optimize edilmesini sağlar.
- *
- * Not: Dökümanlara Göre Şöyle:
- * RecyclerView ilk açılışta;
- * ekranda gösterilebilecek itemlar + ekran aşağı kaydırıldığında ekranda gözükecek olan 2 item'ı
- * bellekte oluşturur. Kullanıcı listeyi 2 item kadar aşağı kaydırdığında, ekrandan çıkan ilk iki
- * item recycle edilmez çünkü ekrana yeni girmiş olan 2 item daha öncesinde oluşturulmuştu. Ancak
- * kullanıcı ekranı daha da aşağı indirmeye başlarsa artık öğeler recycle edilir.
- *
- * Not: Ancak bu her zaman böyle olmuyor. Mesela ekranda gösterilecek item sayısı + 1 olarakta
- * recyclerview öğeleri başatabiliyor. Ama genel kural şu şekilde:
- * 2 + number of views on the screen + 2
- *
- */
+class MainActivity : AppCompatActivity() {
 
-/**
- * Handle Item Click on RecyclerView:
- * onBindViewHolder() methodu içinde, RecyclerView'ın her item'ı için bir clickListener ataması
- * yapabiliriz. Ancak burada bir maliyet söz konusu. Çünkü onBindViewHolder() her item için
- * çalışan bir method ve her çalışmasında clickListener ataması yapmak memory'i gereksiz yere
- * yorar. Aslında şöyle ki clickListener ataması yapmak belleği çok fazla yoran bir işlem değildir
- * ancak eğer ki bizim item'larımız üzerinde birçok view var ise ve bu view'larında bir çoğunda
- * clickListener ataması yapma ihtiyacımız varsa bu durumda her item için clickListener ataması yapmak
- * performansı etkileyebilir.
- *
- * Buna çözüm olarak, clickListener atamasını ViewHolder class'ının init blogu içinde yapmamız gerekir.
- * Çünkü ViewHolder class'ının init blogu, yalnızca ViewHolder objesi oluşturulduğunda çalışacaktır.
- * Ve ViewHolder objesi, sadece uygulama ilk açıldığında ekranda gözüken item'lar için oluşacaktır.
- * Ardından kullanıcı ekranı aşağı-yukarı kaydırdığında recycle olayı olacağı için yeni bir
- * viewHolder objesi vs. oluşmayacaktır. Yani diyelim ki 1000 elemandan bulunan bir listemiz var ve
- * ekranda sadece 10 item'ı aynı anda gösteriyoruz. Uygulama ilk açıldığında sadece ekranda bulunan
- * 10 item için viewHolder objesi oluşturulacak ve diğer 990 item, bu 10 item'ın recycle edilmesiyle
- * elde edileceği için 990 item için artık viewHolder objesi oluşturulmayacak. Bu sayede biz sadece
- * 10 kere clickListener ataması yapmış olacağız.
- *
- * ViewHolder class'ı içinde item'ın position bilgisini almak:
- * Bunun için kullanabileceğimiz iki property var:
- * 1. adapterPosition: Adapter'daki sıraya göre position'ı verir.
- *
- * 2. layoutPosition: Ekranda gördüğümüz view sırasına göre position'ı verir.
- *
- * Not: adapterPosition ve layoutPositon birçok durumda aynı değeri verir. Ancak ekrandaki view
- * sırasıyla adapter'daki sıra aynı olmadığı zamanlar bu property değer aynı değeri vermez. Örneğin
- * biz adapter'a bir veri eklediğimiz ve notify* methodunu çağırdığımız zaman, adapterPosition
- * değeri anında güncellenecektir. Ancak layoutPosition değeri yaklaşık 16ms. sonra güncellenecektir.
- * Bunun sebebi ise; adapter'a yeni bir öğe eklendiğinde, bu öğe'nin ekranda çizilmesi için yaklaşık
- * 16 ms. lik bir süre geçmesidir. Haliyle 16 ms. den önce bu öğe çizilemeyeceğinden dolayı ekranda
- * gösterilemez ve ekrandaki view'ların sırasını gösteren layoutPosition, güncel değeri göstermemiş
- * olur.
- */
-
-class MainActivity : AppCompatActivity(), MyAdapterWithViewBinding.ItemOnClickListener {
-
-    private lateinit var dataSource: ArrayList<String>
     private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        dataSource = createDataSource()
-
-        val recyclerView = binding.recyclerView
-        recyclerView.layoutManager = LinearLayoutManager(this,)
-
-        /*val adapter = MyAdapter(dataSource)
-        recyclerView.adapter = adapter*/
-
-        /*val adapter = MultiViewAdapter(dataSource)
-        recyclerView.adapter = adapter*/
-
-        val adapter = MyAdapterWithViewBinding(dataSource, this)
-        recyclerView.adapter = adapter
-
-    }
-
-    private fun createDataSource(): ArrayList<String> {
-        val arrayList = ArrayList<String>()
-
-        for (number in 1..100) {
-            val item = number.toString()
-            arrayList.add(item)
+        binding.recyclerView.adapter = BasicAdapter(StudentListFactory.createStudentList()) {
+            Toast.makeText(this@MainActivity, "Clicked Item: $it", Toast.LENGTH_SHORT).show()
         }
 
-        return arrayList
-    }
+        /*binding.recyclerView.adapter =
+            AdapterWithViewBinding(StudentListFactory.createStudentList()) {
+                val clickedStudent = it
+                Toast.makeText(this@MainActivity, "You clicked: $clickedStudent", Toast.LENGTH_SHORT)
+                    .show()
+            }*/
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-    override fun onClick(text: String, adapterPosition: Int, layoutPosition: Int) {
-        Toast.makeText(this, "AP: $adapterPosition LP: $layoutPosition", Toast.LENGTH_SHORT).show()
     }
-
 }
+
 

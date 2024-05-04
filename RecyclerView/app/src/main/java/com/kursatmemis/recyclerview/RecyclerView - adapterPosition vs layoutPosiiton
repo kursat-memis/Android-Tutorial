@@ -1,0 +1,63 @@
+
+ Dökümanlar:
+ https://proandroiddev.com/difference-between-position-getadapterposition-and-getlayoutposition-in-recyclerview-80279a2711d1
+ https://stackoverflow.com/questions/29684154/recyclerview-viewholder-getlayoutposition-vs-getadapterposition
+ https://stackoverflow.com/questions/66879093/what-is-the-difference-between-getlayoutposition-and-getadapterposition#:~:text=the%20getLayoutPosition()%20function%20returns,updates%20but%20a%20new%20layout
+
+ -> Aralarındaki fark yukarıdaki dökümantasyonlarda anlatılıyor. Ancak özet olarak aşağıda
+    aralarındaki farkı anlattım:
+
+ Not: onBindViewHolder() function'ı içinde position değerlerini kullanarak öğe ekleme/çıkarma
+      işlemi çok sağlıklı değil. Çünkü yeni bir öğe ekleyip çıkardığımızda onBindViewHolder
+      function'ı otomatik olarak çalışan bir function değil. Bundan dolayı da parametre olarak
+      aldığı 'position' değeri güncellenmeden kalabiliyor. Bunun sonucunda da uygulamamız hatalı bir
+      şekilde çalışabiliyor. Aşağıdaki makalede bu problemden bahsediliyor:
+      https://proandroiddev.com/difference-between-position-getadapterposition-and-getlayoutposition-in-recyclerview-80279a2711d1
+
+ AdapterPosition vs LayoutPosition:
+ -> Her iki property'de ViewHolder class'ı içinde erişerek dataSource'dan ilgili item'ı elde
+    etmek için bunları kullanabiliriz. Ancak aralarında ince bir fark var:
+
+    AdapterPosition: Item'ların adapter'daki position değerlerini verir.
+    LayoutPosition: Item'ların ekranda gördüğümüz şekliyle position değerlerini verir.
+
+    Peki ama adapter'daki sıra ve ekranda gördüğümüz sıra zaten aynı değil mi?
+    -> Evet aynı ancak bazen değişebiliyor...
+    -> Mesela diyelim ki bir item'a tıkladığımızda dataSource'un 0. indexine Item-0 adlı öğe eklemek
+       ve adapter'ımızında güncellenmesini istiyoruz. Bu işlemler gerçekleşir gerçekleşmez
+       tıkladığımız item'ın adapterPosition ve layoutPosition değerlerini log'lamak istiyoruz.
+    -> Şimdi diyelim ki ilk öğe olan Item-1'e tıkladık. Tıklar tıklamaz Item-0 dataSource'uma
+       eklenmiş olacak. adapterPosition değeri, Item-1'in adapter'daki konumunu return edeceğinden
+       dolayı hemen güncellenecek ve bize 1 değerini return edecektir. Ancak Item-0 ekranda çizilene
+       kadar layoutPosition değeri 0 olarak kalacaktır. Yani, layoutPosition değeri biraz
+       gecikmeli olarak (< 16ms) güncelleneceğinden dolayı logcat'de 0 çıktısını alacağız.
+
+ Ne Zaman Hangisini Kullanalım?
+ -> Aslında birçok durumda adapterPosition ve layoutPosition değerini aynı olarak alırız. Ancak
+    yukarda bahsettiğim gibi özel bir senaryomuz varsa bu durumda layoutPosition değerinin
+    adapterPosition değerinden biraz daha geç güncellenecek olacağını göz ardı etmemeliyiz.
+
+ Genel olarak tavsiye edilen kullanım şu:
+ -> Eğer ki item'ların ekrandaki görünüm sıraları ile değil, adapter'da ki konumlarıyla
+    ilgileniyorsak -> adapterPosition kullanalım.
+ -> Eğer ki item'ların adapter'daki konumlarıyla değil de daha çok ekrandaki konumlarıyla
+    ilgileniyorsak layoutPosition kullanalım.
+
+ Not: Her zaman son güncel değeri vermesi adına daha yoğunluklu olarak adapterPosition kullanılır.
+      layoutPosition'ı sadece item'lar üzerinde animasyonlu işlemler gerçekleştirirken kullanın
+      diyorlar.
+
+      Mesela diyelim ki bir item'a tıkladığımızda item animasyonlu olarak ekrandan çıkarılacak
+      olsun. Kullanıcı gidip Item-1'e tıkladığı anda animasyon bitene kadar Item-2'nin
+      layoutPosition değeri değişmeden 1 olarak kalır. Çünkü ekrandaki sırası hala aynıdır. Ancak
+      dataSource'dan Item-1 çıkarıldığı için Item-2'nin adapterPosition değeri anında 0 güncellenir.
+      Bu gibi bir senaryoda, adapter'daki position'dan ziyade kullanıcının ekranda gördüğü sıra
+      bizi ilgilendiriyorsa layoutPosition kullanılması tavsiye ediliyor.
+
+ Not: Ya bu layoutPosition değerinin kullanıldığında doğru sonuç, adapterPosition değeri
+      kullanıldığında yanlış sonuç alabileceğim bir senaryo var mı diye çok fazla düşünme.
+      Bunlar çoğu zaman aynı değerleri üreteceği için hangisini kullanırsan kullan çok bir fark
+      göremeyeceksin. Zaten bunların hangisini kullanılacağı da developer'ın seçimine bağlı.
+      Sadece aralarındaki farkı bil ve hangisini kullanacaksan bu farkı gözeterek kullan.
+      Ama genel olarak adapterPosition kullanılıyor çünkü layoutPosition'a göre daha güncel bir
+      konum return ettiği için daha güvenli bir kod yazımı sağlıyor. Sende bunu kullan.

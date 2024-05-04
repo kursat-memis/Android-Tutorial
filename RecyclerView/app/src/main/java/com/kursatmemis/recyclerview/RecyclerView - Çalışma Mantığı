@@ -1,0 +1,83 @@
+
+ İlgili Döküman:
+ https://blog.mindorks.com/how-does-recyclerview-work-internally/
+
+ RecyclerView Arka Planda Nasıl Çalışır?
+ -> Biliyoruz ki RecyclerView, ekrandan çıkan view'ları recycle ederek ekrana yeni girecek
+    view'ları oluşturuyor. Peki bunu nasıl yapıyor? İnceleyelim...
+ -> İlk önce anlatım sırasında kullanacağımız terimleri öğrenelim:
+    Visible View: Ekranda o an görünen item'lara denir.
+    Scrapped View: Ekranda bir zamanlar visible olan ancak şimdi ekrandan çıkan item'lara denir.
+    Waiting View: Ekranı kaydırdığımızda ekrana girecek olan item'lara denir.
+
+ -> RecyclerView şu mantıkla çalışıyor:
+    Ekrandan çıkan item'ları scrapped view olarak tutuyor. Ve waiting view'ları oluştururken de
+    scrapped view'lardan aldığı item'ları recycle ediyor.
+
+    Bellekteki toplam view sayısı = 2 scrapped view + number of visible views on the screen + 2 waiting view
+    Bu formülden çok bir şey anlamamış olabiliriz. Ancak bunu örnek bir senaryo üzerinden anlatalım.
+
+ Örnek Senaryo:
+ Diyelim ki bizim 50 item'ımız var ve bu item'ları RecyclerView üzerinde göstermek istiyoruz.
+ Bu item'larımız şu şekilde: Item-1, Item-2, Item-3, Item-4, Item-5, ..., Item-50
+ Bizim ekranımızda ise aynı anda sadece 5 item gözükmekte olsun.
+
+ Step - 1: Uygulamayı ilk açtığımızda ekranda 5 item gözüküyor dedik. İlk açılışta henüz scrapped
+           view olmadığı için hiçbir şeyi recycle etmez ve bu 5 item'ı da inflation ile oluşturur.
+ Step - 2: Kullanıcı ekranı birazcık kaydırmaya başladığı anda 2 adet waiting view oluşturur.
+           (Item-6 ve Item-7)
+           Not: Henüz ekrandan hiçbir item çıkmadı. RecyclerView, kullanıcı ekranı kaydırmaya başlar
+                başlamaz ekrana girecek olan 2 item'ı (waiting view'ı) oluşturur.
+
+           Son durumumuz şöyle:
+           Scrapped View -> Empty
+           Visible View -> Item-1, Item-2, Item-3, Item-4, Item-5
+           Waiting View -> Item-6, Item-7
+
+ Step - 3: Kullanıcı ekranı biraz daha aşağı kaydırdığında Item-1 ekrandan çıkar ve scrapped view
+           olur. Bu sırada Item-6 ekrana girdiği için Item-6'da waiting view olmaktan çıkar ve
+           visible view olur. Tam bu noktada Item-8'de inflation ile oluşturulur.
+           Not: Henüz recycle işlemi başlamadı. '2 scrapped view + visible items + 2 waiting view'
+                durumuna ulaştıktan sonra recycle işlemi başlayacak.
+
+           Son durumumuz şöyle:
+           Scrapped View -> Item-1
+           Visible View -> Item-2, Item-3, Item-4, Item-5, Item-6
+           Waiting View -> Item-7, Item-8
+
+ Step - 4: Kullanıcı ekranı biraz daha aşağı kaydırdığında Item-2 ekrandan çıkar ve scrapped view
+           olur. Bu sırada Item-7 ekrana girdiği için Item-7'de waiting view olmaktan çıkar ve
+           visible view olur. Tam bu noktada Item-9 inflation ile oluşturulur.
+
+           Son durumumuz şöyle:
+           Scrapped View -> Item-1, Item-2
+           Visible View -> Item-3, Item-4, Item-5, Item-6, Item-7
+           Waiting View -> Item-8, Item-9
+
+           Artık '2 scrapped view + visible items + 2 waiting view' durumumuza ulaştık. Recycle
+           işlemi bundan sonra başlıyor. Yani artık oluşturulacak waiting view'lar,
+           scrapped view'ların recycle edilmesiyle oluşturulacak.
+
+ Step - 5:  Kullanıcı ekranı biraz daha aşağı kaydırdığında Item-3 ekrandan çıkar ve scrapped view
+            olur. Bu sırada Item-8 ekrana girdiği için Item-8'de waiting view olmaktan çıkar ve
+            visible view olur. Tam bu noktada Item-10 RECYCLE ile oluşturulur. Yani scrapped view'da
+            tutulan Item-1, Item-10'u oluşturmak için kullanılır.
+
+            Son durumumuz şöyle:
+            Scrapped View -> Item-2, Item-3
+            Visible View -> Item-4, Item-5, Item-6, Item-7, Item-8
+            Waiting View -> Item-9, Item-10
+
+            Artık bundan sonra waiting view oluşturulacağı zaman, scrapped view'lar recycle
+            edilir. Bir daha inflation yapılmaz. Bu sayede de RecyclerView, performanslı bir şekilde
+            çalışır.
+
+            Ayrıca burada görüldüğü gibi, RecyclerView her zaman 2 adet waiting view'ı bunlar daha
+            ekrana gelmeden önce oluşturuyor. Yani bizim bellekteki toplam view sayımız;
+            "2 scrapped view + number of visible views on the screen + 2 waiting view" oluyor. Yani;
+            Bizim örneğimizde ekranda 5 item gözükebildiği için;
+            2 + 5 + 2 = 9 view bellekte tutuluyor. Sadece 9 view'ı kullanarak koca bir listeyi
+            ekranda göstermiş oluyoruz. Bu da liste boyutumuz ne olursa olsun, bizim uygulamamız
+            çok güzel bir performansla çalışır anlamına geliyor. Çünkü liste boyutu kadar değil
+            sadece 9 kez view oluşturmuş oluyoruz. :)
+
