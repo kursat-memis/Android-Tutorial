@@ -1,0 +1,23 @@
+
+ Not: Android'in resmi dökümantasyonu gayet güzel bir rehber hazırlamış. Eğer istersen nasıl
+      kullanacağına buradan bakabilirsin:
+ https://developer.android.com/develop/background-work/background-tasks/persistent/getting-started?hl=tr
+
+ WorkManager:
+ -> Jetpack öğesidir.
+ -> Arka planda yapılması gereken işler için kullanılır. Yani yaptığımız uygulamada, uygulama
+    kapatılsa veya cihaz yeniden başlatılsa bile yapılmasını istediğimiz bir iş varsa
+    WorkManager kullanırız.
+ -> WorkManager ile bir defalık ya da periyodik olarak çalıştırılabilen kodlar yazabiliriz.
+ -> WorkManager'a constraint atamasında bulunarak yapılmasını istediğimiz işleri, "Cihaz Wifi'a
+    bağlıysa" veya "Cihaz şarj ediliyorsa" gibi koşullara bağlı olarak yapabiliriz.
+ -> WorkManager ile zincirleme bir şekilde işlerimizi gerçekleştirebilir ve bu sayede bir iş
+    bittikten sonra başka bir işin yapılmasını sağlayabiliriz.
+
+ Not: WorkManager'da periyodik olarak bir işin gerçekleştireceğimiz sırada, Android o işin en az
+      15 dk.'da bir gerçekleştirilmesine izin verir. Yani 15 dk.'dan az sürelerde işin tekrar
+      tekrar yapılmasını sağlayamıyoruz.
+
+
+
+
